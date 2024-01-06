@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model BaileysSession {
+  pkId      BigInt @id @default(autoincrement())
+  sessionId String
+  id        String
+  data      String @db.LongText
+
+  @@unique([sessionId, id], map: "unique_id_per_session_id_session")
+  @@index([sessionId])
+}
