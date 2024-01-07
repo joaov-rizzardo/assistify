@@ -16,3 +16,61 @@ model BaileysSession {
   @@unique([sessionId, id], map: "unique_id_per_session_id_session")
   @@index([sessionId])
 }
+
+model Users {
+  id              String            @id @default(uuid())
+  name            String
+  last_name       String
+  email           String
+  password        String
+  profile_picture String
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  WorkspaceMember WorkspaceMember[]
+}
+
+model Workspaces {
+  id                String              @id @default(uuid())
+  name              String
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  WorkspaceMember   WorkspaceMember[]
+  WorkspaceInstance WorkspaceInstance[]
+  Contacts          Contacts[]
+}
+
+model WorkspaceMember {
+  user_id      String
+  user         Users      @relation(fields: [user_id], references: [id])
+  workspace_id String
+  workspace    Workspaces @relation(fields: [workspace_id], references: [id])
+  role         String
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
+
+  @@id([user_id, workspace_id])
+}
+
+model WorkspaceInstance {
+  session_id   String     @id @unique
+  workspace_id String
+  workspace    Workspaces @relation(fields: [workspace_id], references: [id])
+  name         String
+  phone_number String
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
+
+  @@index([workspace_id])
+}
+
+model Contacts {
+  id              String     @id @default(uuid())
+  workspace_id    String
+  workspace       Workspaces @relation(fields: [workspace_id], references: [id])
+  name            String
+  phone_number    String
+  profile_picture String
+  email           String
+  created_at      DateTime   @default(now())
+  updated_at      DateTime   @updatedAt
+}
