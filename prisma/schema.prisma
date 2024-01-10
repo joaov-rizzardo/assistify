@@ -23,7 +23,7 @@ model Users {
   last_name       String
   email           String
   password        String
-  profile_picture String
+  profile_picture String?
   created_at      DateTime          @default(now())
   updated_at      DateTime          @updatedAt
   WorkspaceMember WorkspaceMember[]
