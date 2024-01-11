@@ -1,13 +1,17 @@
 import { InMemoryUserRepository } from 'src/test/repositories/in-memory-user-repository';
 import { CreateUserUseCase } from './create-user-use-case';
 import { User } from 'src/application/core/entities/user';
+import { BcryptPasswordEncrypter } from 'src/infra/libs/bcrypt/bcrypt-password-encrypter';
+import { PasswordEncrypter } from 'src/application/core/interfaces/password-encrypter';
 
 describe('Create user use case', () => {
   let inMemoryRepository: InMemoryUserRepository;
   let sut: CreateUserUseCase;
+  let passwordEncrypter: PasswordEncrypter;
   beforeEach(() => {
     inMemoryRepository = new InMemoryUserRepository();
-    sut = new CreateUserUseCase(inMemoryRepository);
+    passwordEncrypter = new BcryptPasswordEncrypter();
+    sut = new CreateUserUseCase(inMemoryRepository, passwordEncrypter);
   });
 
   it('should create user', async () => {
@@ -29,7 +33,10 @@ describe('Create user use case', () => {
       expect(user.getName()).toBe(name);
       expect(user.getEmail()).toBe(email);
       expect(user.getLastName()).toBe(lastName);
-      expect(user.getPassword()).toBe(password);
+      expect(user.getPassword()).not.toBe(password);
+      expect(
+        await passwordEncrypter.checkPassword(password, user.getPassword()),
+      ).toBe(true);
     }
   });
 
