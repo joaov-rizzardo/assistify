@@ -1,11 +1,23 @@
 -- CreateTable
+CREATE TABLE `BaileysSession` (
+    `pkId` BIGINT NOT NULL AUTO_INCREMENT,
+    `sessionId` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
+    `data` LONGTEXT NOT NULL,
+
+    INDEX `BaileysSession_sessionId_idx`(`sessionId`),
+    UNIQUE INDEX `unique_id_per_session_id_session`(`sessionId`, `id`),
+    PRIMARY KEY (`pkId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Users` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `last_name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `profile_picture` VARCHAR(191) NOT NULL,
+    `profile_picture` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 

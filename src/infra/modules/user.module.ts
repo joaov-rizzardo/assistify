@@ -4,8 +4,8 @@ import { CreateUserController } from 'src/presentation/controllers/create-user-c
 import { PrismaUserRepository } from '../database/prisma/repositories/prisma-user-repository';
 import { CreateUserUseCase } from 'src/application/use-cases/user/create-user-use-case';
 import { PrismaModule } from '../database/prisma/prisma.module';
-import { PasswordEncrypter } from 'src/application/core/interfaces/password-encrypter';
 import { BcryptPasswordEncrypter } from '../libs/bcrypt/bcrypt-password-encrypter';
+import { PasswordEncrypter } from 'src/application/core/interfaces/cryptography/password-encrypter';
 
 @Module({
   imports: [PrismaModule],

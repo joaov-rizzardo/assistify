@@ -38,4 +38,21 @@ export class PrismaUserRepository implements UserRepository {
     const quantity = await this.prisma.users.count({ where: { email } });
     return quantity > 0;
   }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.prisma.users.findFirst({ where: { email } });
+    if (!user) {
+      return null;
+    }
+    return new User({
+      id: user.id,
+      name: user.name,
+      lastName: user.last_name,
+      email: user.email,
+      password: user.password,
+      profilePicture: user.profile_picture,
+      createdAt: user.created_at,
+      updatedAt: user.updated_at,
+    });
+  }
 }

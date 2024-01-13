@@ -2,7 +2,8 @@ import { InMemoryUserRepository } from 'src/test/repositories/in-memory-user-rep
 import { CreateUserUseCase } from './create-user-use-case';
 import { User } from 'src/application/core/entities/user';
 import { BcryptPasswordEncrypter } from 'src/infra/libs/bcrypt/bcrypt-password-encrypter';
-import { PasswordEncrypter } from 'src/application/core/interfaces/password-encrypter';
+import { makeUser } from 'src/test/factories/make-user';
+import { PasswordEncrypter } from 'src/application/core/interfaces/cryptography/password-encrypter';
 
 describe('Create user use case', () => {
   let inMemoryRepository: InMemoryUserRepository;
@@ -15,10 +16,7 @@ describe('Create user use case', () => {
   });
 
   it('should create user', async () => {
-    const name = 'John';
-    const lastName = 'Doe';
-    const password = 'safe_password123';
-    const email = 'john.doe@mail.com';
+    const { name, lastName, email, password } = makeUser();
     const result = await sut.execute({
       name,
       lastName,
@@ -41,18 +39,13 @@ describe('Create user use case', () => {
   });
 
   it('should check email', async () => {
-    await sut.execute({
-      name: 'John',
-      lastName: 'Doe',
-      password: 'safe_password123',
-      email: 'john.doe@mail.com',
-    });
+    const { name, lastName, email, password } = makeUser();
+
+    await sut.execute({ name, lastName, email, password });
 
     const result = await sut.execute({
-      name: 'Another',
-      lastName: 'User',
-      password: 'safe_password123',
-      email: 'john.doe@mail.com',
+      ...makeUser(),
+      email: email,
     });
 
     expect(result.isLeft()).toBe(true);
