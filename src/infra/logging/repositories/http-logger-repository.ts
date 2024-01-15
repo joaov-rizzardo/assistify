@@ -2,7 +2,7 @@ import { LogLevels } from 'src/application/core/interfaces/logging/http-logger';
 
 export type SaveLogParams = {
   message: string;
-  userId: string;
+  userId?: string;
   body?: string;
   route: string;
   httpCode: number;

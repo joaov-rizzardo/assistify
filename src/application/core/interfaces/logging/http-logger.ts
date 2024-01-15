@@ -1,5 +1,5 @@
 export type LogData = {
-  userId: string;
+  userId?: string;
   body?: Record<any, any>;
   stack?: string;
   route: string;
