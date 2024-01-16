@@ -7,10 +7,12 @@ import { HttpLogger } from './application/core/interfaces/logging/http-logger';
 import { DatabaseHttpLogger } from './infra/logging/database-http-logger';
 import { APP_FILTER } from '@nestjs/core';
 import { GlobalExceptionFilter } from './infra/filters/global-exception-filter';
+import { AuthModule } from './infra/modules/auth.module';
 
 @Module({
   imports: [
-    LogsModule.forRoot(),
+    LogsModule,
+    AuthModule,
     BaileysModule,
     UserModule,
     AuthenticationModule,
