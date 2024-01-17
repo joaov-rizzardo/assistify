@@ -27,11 +27,14 @@ model Users {
   created_at      DateTime          @default(now())
   updated_at      DateTime          @updatedAt
   WorkspaceMember WorkspaceMember[]
+  Workspaces      Workspaces[]
 }
 
 model Workspaces {
   id                String              @id @default(uuid())
   name              String
+  owner_id          String
+  owner             Users               @relation(fields: [owner_id], references: [id])
   created_at        DateTime            @default(now())
   updated_at        DateTime            @updatedAt
   WorkspaceMember   WorkspaceMember[]

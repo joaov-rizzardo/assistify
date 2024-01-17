@@ -25,8 +25,13 @@ export class InMemoryUserRepository implements UserRepository {
     return user;
   }
 
-  async checkUserExistsByEmail(email: string): Promise<boolean> {
+  async checkIfUserExistsByEmail(email: string): Promise<boolean> {
     const user = this.users.find((user) => user.getEmail() === email);
+    return user !== undefined;
+  }
+
+  async checkIfUserExistsById(userId: string): Promise<boolean> {
+    const user = this.users.find((user) => user.getId() === userId);
     return user !== undefined;
   }
 

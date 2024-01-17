@@ -19,7 +19,7 @@ export class CreateUserUseCase {
     email,
     password,
   }: CreateUserDTO): Promise<CreateUserUseCaseResponse> {
-    if (await this.userRepository.checkUserExistsByEmail(email)) {
+    if (await this.userRepository.checkIfUserExistsByEmail(email)) {
       return left(new UserAlreadyExistsError(email));
     }
     const user = await this.userRepository.create({

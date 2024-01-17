@@ -8,6 +8,7 @@ import { DatabaseHttpLogger } from './infra/logging/database-http-logger';
 import { APP_FILTER } from '@nestjs/core';
 import { GlobalExceptionFilter } from './infra/filters/global-exception-filter';
 import { AuthModule } from './infra/modules/auth.module';
+import { WorkspaceModule } from './infra/modules/workspace.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './infra/modules/auth.module';
     AuthModule,
     BaileysModule,
     UserModule,
+    WorkspaceModule,
     AuthenticationModule,
   ],
   providers: [

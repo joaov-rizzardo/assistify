@@ -34,8 +34,13 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async checkUserExistsByEmail(email: string): Promise<boolean> {
+  async checkIfUserExistsByEmail(email: string): Promise<boolean> {
     const quantity = await this.prisma.users.count({ where: { email } });
+    return quantity > 0;
+  }
+
+  async checkIfUserExistsById(userId: string): Promise<boolean> {
+    const quantity = await this.prisma.users.count({ where: { id: userId } });
     return quantity > 0;
   }
 

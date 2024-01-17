@@ -4,5 +4,6 @@ import { User } from '../../entities/user';
 export abstract class UserRepository {
   abstract create({}: CreateUserDTO): Promise<User>;
   abstract findByEmail(email: string): Promise<User> | null;
-  abstract checkUserExistsByEmail(email: string): Promise<boolean>;
+  abstract checkIfUserExistsByEmail(email: string): Promise<boolean>;
+  abstract checkIfUserExistsById(userId: string): Promise<boolean>;
 }
