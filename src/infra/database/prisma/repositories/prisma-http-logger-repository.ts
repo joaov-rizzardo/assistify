@@ -7,9 +7,9 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PrismaHttpLoggerRepository implements HttpLoggerRepository {
-  constructor(private readonly prismaProvider: PrismaProvider) {}
+  constructor(private readonly prisma: PrismaProvider) {}
   async save(args: SaveLogParams): Promise<void> {
-    await this.prismaProvider.httpLogs.create({
+    await this.prisma.transactionContext.httpLogs.create({
       data: {
         httpCode: args.httpCode,
         level: args.level,

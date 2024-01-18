@@ -11,7 +11,7 @@ export class PrismaWorkspaceRepository implements WorkspaceRepository {
   constructor(private readonly prisma: PrismaProvider) {}
 
   async create({ name, ownerId }: CreateWorkspaceProps): Promise<Workspace> {
-    const workspace = await this.prisma.workspaces.create({
+    const workspace = await this.prisma.transactionContext.workspaces.create({
       data: { name, owner_id: ownerId },
     });
     return new Workspace({

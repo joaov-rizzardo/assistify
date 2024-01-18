@@ -10,11 +10,14 @@ import { InMemoryUserRepository } from 'src/test/repositories/in-memory-user-rep
 import { makeUser } from 'src/test/factories/make-user';
 import { v4 as uuid } from 'uuid';
 import { UserNotExistsError } from './errors/user-not-exists-error';
+import { RunTransactionOperation } from 'src/application/core/interfaces/database/run-transaction-operation';
+import { FakeTransactionOperation } from 'src/test/database/fake-transaction-operation';
 
 describe('Create workspace use-case', () => {
   let workspaceRepository: WorkspaceRepository;
   let workspaceMembersRepository: WorkspaceMembersRepository;
   let userRepository: UserRepository;
+  let transactionOperation: RunTransactionOperation;
   let sut: CreateWorkspaceUseCase;
   let user: User;
 
@@ -22,11 +25,13 @@ describe('Create workspace use-case', () => {
     workspaceRepository = new InMemoryWorkspaceRepository();
     workspaceMembersRepository = new InMemoryWorkspaceMembersRepository();
     userRepository = new InMemoryUserRepository();
+    transactionOperation = new FakeTransactionOperation();
     user = await userRepository.create(makeUser());
     sut = new CreateWorkspaceUseCase(
       workspaceRepository,
       workspaceMembersRepository,
       userRepository,
+      transactionOperation,
     );
   });
 

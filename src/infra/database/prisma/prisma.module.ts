@@ -10,6 +10,8 @@ import { WorkspaceRepository } from 'src/application/core/interfaces/repositorie
 import { PrismaWorkspaceRepository } from './repositories/prisma-workspace-repository';
 import { WorkspaceMembersRepository } from 'src/application/core/interfaces/repositories/workspace-members-repository';
 import { PrismaWorkspaceMembersRepository } from './repositories/prisma-workspace-members-repository';
+import { PrismaTransactionOperation } from './prisma-transaction-operation';
+import { RunTransactionOperation } from 'src/application/core/interfaces/database/run-transaction-operation';
 
 @Module({
   imports: [],
@@ -35,6 +37,10 @@ import { PrismaWorkspaceMembersRepository } from './repositories/prisma-workspac
       provide: WorkspaceMembersRepository,
       useClass: PrismaWorkspaceMembersRepository,
     },
+    {
+      provide: RunTransactionOperation,
+      useClass: PrismaTransactionOperation,
+    },
   ],
   exports: [
     PrismaProvider,
@@ -43,6 +49,7 @@ import { PrismaWorkspaceMembersRepository } from './repositories/prisma-workspac
     HttpLoggerRepository,
     WorkspaceRepository,
     WorkspaceMembersRepository,
+    RunTransactionOperation,
   ],
 })
 export class PrismaModule {

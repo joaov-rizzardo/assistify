@@ -17,7 +17,7 @@ export class PrismaWorkspaceMembersRepository
     role,
     workspaceId,
   }: AddMemberProps): Promise<WorkspaceMember> {
-    const member = await this.prisma.workspaceMember.create({
+    const member = await this.prisma.transactionContext.workspaceMember.create({
       data: {
         user_id: userId,
         role,
@@ -37,12 +37,13 @@ export class PrismaWorkspaceMembersRepository
     workspaceId: string,
     userId: string,
   ): Promise<WorkspaceMember> {
-    const member = await this.prisma.workspaceMember.findFirst({
-      where: {
-        workspace_id: workspaceId,
-        user_id: userId,
-      },
-    });
+    const member =
+      await this.prisma.transactionContext.workspaceMember.findFirst({
+        where: {
+          workspace_id: workspaceId,
+          user_id: userId,
+        },
+      });
     return new WorkspaceMember({
       userId: member.user_id,
       workspaceId: member.workspace_id,
