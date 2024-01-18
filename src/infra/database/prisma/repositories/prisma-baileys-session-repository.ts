@@ -16,7 +16,7 @@ export class PrismaBaileysSessionRepository
     id: string,
     sessionId: string,
   ): Promise<void> {
-    await this.prisma.transactionContext.baileysSession.delete({
+    await this.prisma.client.baileysSession.delete({
       select: { pkId: true },
       where: {
         sessionId_id: { id, sessionId },
@@ -28,10 +28,9 @@ export class PrismaBaileysSessionRepository
     id: string,
     sessionId: string,
   ): Promise<BaileysSession> {
-    const session =
-      await this.prisma.transactionContext.baileysSession.findUnique({
-        where: { sessionId_id: { id, sessionId } },
-      });
+    const session = await this.prisma.client.baileysSession.findUnique({
+      where: { sessionId_id: { id, sessionId } },
+    });
     return session
       ? new BaileysSession(
           session.pkId,
@@ -47,7 +46,7 @@ export class PrismaBaileysSessionRepository
     sessionId,
     data,
   }: BaileysSessionUpsertType): Promise<BaileysSession> {
-    const session = await this.prisma.transactionContext.baileysSession.upsert({
+    const session = await this.prisma.client.baileysSession.upsert({
       create: { data, id, sessionId },
       update: { data },
       where: { sessionId_id: { id, sessionId } },
@@ -61,10 +60,9 @@ export class PrismaBaileysSessionRepository
   }
 
   public async findActiveSessions(): Promise<BaileysSession[]> {
-    const sessions =
-      await this.prisma.transactionContext.baileysSession.findMany({
-        where: { id: 'creds' },
-      });
+    const sessions = await this.prisma.client.baileysSession.findMany({
+      where: { id: 'creds' },
+    });
     return sessions.map(
       (session) =>
         new BaileysSession(
@@ -77,7 +75,7 @@ export class PrismaBaileysSessionRepository
   }
 
   public async deleteSessionById(sessionId: string): Promise<void> {
-    await this.prisma.transactionContext.baileysSession.deleteMany({
+    await this.prisma.client.baileysSession.deleteMany({
       where: { sessionId },
     });
   }

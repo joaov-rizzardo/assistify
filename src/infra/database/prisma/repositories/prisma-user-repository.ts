@@ -14,7 +14,7 @@ export class PrismaUserRepository implements UserRepository {
     lastName,
     password,
   }: CreateUserDTO): Promise<User> {
-    const createdUser = await this.prisma.transactionContext.users.create({
+    const createdUser = await this.prisma.client.users.create({
       data: {
         name,
         last_name: lastName,
@@ -35,21 +35,21 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async checkIfUserExistsByEmail(email: string): Promise<boolean> {
-    const quantity = await this.prisma.transactionContext.users.count({
+    const quantity = await this.prisma.client.users.count({
       where: { email },
     });
     return quantity > 0;
   }
 
   async checkIfUserExistsById(userId: string): Promise<boolean> {
-    const quantity = await this.prisma.transactionContext.users.count({
+    const quantity = await this.prisma.client.users.count({
       where: { id: userId },
     });
     return quantity > 0;
   }
 
   async findByEmail(email: string): Promise<User> {
-    const user = await this.prisma.transactionContext.users.findFirst({
+    const user = await this.prisma.client.users.findFirst({
       where: { email },
     });
     if (!user) {

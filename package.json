@@ -25,10 +25,12 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.7.1",
+    "@types/cls-hooked": "^4.3.8",
     "@whiskeysockets/baileys": "^6.5.0",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "cls-hooked": "^4.2.2",
     "jsonwebtoken": "^9.0.2",
     "qrcode-terminal": "^0.12.0",
     "reflect-metadata": "^0.1.13",
@@ -81,7 +83,9 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "setupFiles": ["<rootDir>/test/setup.ts"],
+    "setupFiles": [
+      "<rootDir>/test/setup.ts"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }

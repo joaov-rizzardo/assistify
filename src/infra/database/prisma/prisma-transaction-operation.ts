@@ -8,7 +8,7 @@ export class PrismaTransactionOperation implements RunTransactionOperation {
   constructor(private readonly prisma: PrismaProvider) {}
 
   async execute<T>(callback: () => T | Promise<T>): Promise<T> {
-    return this.prisma.transactionContext
+    return this.prisma.client
       .$transaction(async (prisma) => {
         this.prisma.startTransactionContext(prisma as PrismaClient);
         const response = await callback();
