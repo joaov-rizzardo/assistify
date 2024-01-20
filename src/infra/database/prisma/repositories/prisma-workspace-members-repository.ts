@@ -43,13 +43,15 @@ export class PrismaWorkspaceMembersRepository
         user_id: userId,
       },
     });
-    return new WorkspaceMember({
-      userId: member.user_id,
-      workspaceId: member.workspace_id,
-      role: member.role,
-      createdAt: member.created_at,
-      updatedAt: member.updated_at,
-    });
+    return member
+      ? new WorkspaceMember({
+          userId: member.user_id,
+          workspaceId: member.workspace_id,
+          role: member.role,
+          createdAt: member.created_at,
+          updatedAt: member.updated_at,
+        })
+      : null;
   }
 
   async findUserWorkspaces(userId: string): Promise<WorkspaceMember[]> {

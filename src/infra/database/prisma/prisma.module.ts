@@ -65,4 +65,16 @@ export class PrismaModule {
       exports: [HttpLoggerRepository],
     };
   }
+  static forAuth(): DynamicModule {
+    return {
+      module: PrismaModule,
+      providers: [
+        {
+          provide: WorkspaceMembersRepository,
+          useClass: PrismaWorkspaceMembersRepository,
+        },
+      ],
+      exports: [WorkspaceMembersRepository],
+    };
+  }
 }
