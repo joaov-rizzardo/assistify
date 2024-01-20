@@ -6,6 +6,9 @@ import {
 import * as jwt from 'jsonwebtoken';
 import { Injectable } from '@nestjs/common';
 
+const EXPIRES_IN_FIVE_MINUTES = 60 * 5;
+const EXPIRES_IN_ONE_WEEK = 60 * 60 * 24 * 7;
+
 @Injectable()
 export class JwtTokenGenerator implements TokenGenerator {
   private readonly ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
@@ -14,14 +17,14 @@ export class JwtTokenGenerator implements TokenGenerator {
   generateAccessToken(userId: string): string | Promise<string> {
     return jwt.sign({}, this.ACCESS_TOKEN_SECRET, {
       subject: userId,
-      expiresIn: '7d',
+      expiresIn: EXPIRES_IN_FIVE_MINUTES,
     });
   }
 
   generateRefreshToken(userId: string): string | Promise<string> {
     return jwt.sign({}, this.REFRESH_TOKEN_SECRET, {
       subject: userId,
-      expiresIn: '5m',
+      expiresIn: EXPIRES_IN_ONE_WEEK,
     });
   }
 
