@@ -9,7 +9,7 @@ import { InMemoryWorkspaceMembersRepository } from 'src/test/repositories/in-mem
 import { InMemoryUserRepository } from 'src/test/repositories/in-memory-user-repository';
 import { makeUser } from 'src/test/factories/make-user';
 import { v4 as uuid } from 'uuid';
-import { UserNotExistsError } from './errors/user-not-exists-error';
+import { UserNotExistsError } from '../../errors/user-not-exists-error';
 import { RunTransactionOperation } from 'src/application/core/interfaces/database/run-transaction-operation';
 import { FakeTransactionOperation } from 'src/test/database/fake-transaction-operation';
 

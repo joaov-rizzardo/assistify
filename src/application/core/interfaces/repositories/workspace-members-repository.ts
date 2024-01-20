@@ -12,4 +12,5 @@ export abstract class WorkspaceMembersRepository {
     workspaceId: string,
     userId: string,
   ): Promise<WorkspaceMember | null>;
+  abstract findUserWorkspaces(userId: string): Promise<WorkspaceMember[]>;
 }

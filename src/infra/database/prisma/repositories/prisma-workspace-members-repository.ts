@@ -51,4 +51,20 @@ export class PrismaWorkspaceMembersRepository
       updatedAt: member.updated_at,
     });
   }
+
+  async findUserWorkspaces(userId: string): Promise<WorkspaceMember[]> {
+    const members = await this.prisma.client.workspaceMember.findMany({
+      where: { user_id: userId },
+    });
+    return members.map(
+      (member) =>
+        new WorkspaceMember({
+          userId: member.user_id,
+          workspaceId: member.workspace_id,
+          role: member.role,
+          createdAt: member.created_at,
+          updatedAt: member.updated_at,
+        }),
+    );
+  }
 }

@@ -19,4 +19,11 @@ export class InMemoryWorkspaceRepository implements WorkspaceRepository {
     this.workspaces.push(workspace);
     return workspace;
   }
+
+  async findById(workspaceId: string): Promise<Workspace> {
+    const workspace = this.workspaces.find(
+      (workspace) => workspace.getId() === workspaceId,
+    );
+    return workspace || null;
+  }
 }

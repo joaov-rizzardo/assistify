@@ -4,7 +4,7 @@ import { UserRepository } from 'src/application/core/interfaces/repositories/use
 import { WorkspaceMembersRepository } from 'src/application/core/interfaces/repositories/workspace-members-repository';
 import { WorkspaceRepository } from 'src/application/core/interfaces/repositories/workspace-repository';
 import { Either, left, right } from 'src/application/errors/either';
-import { UserNotExistsError } from './errors/user-not-exists-error';
+import { UserNotExistsError } from '../../errors/user-not-exists-error';
 import { RunTransactionOperation } from 'src/application/core/interfaces/database/run-transaction-operation';
 
 type CreateWorkspaceUseCaseResponse = Either<UserNotExistsError, Workspace>;

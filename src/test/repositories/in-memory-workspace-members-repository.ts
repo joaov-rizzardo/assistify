@@ -36,4 +36,11 @@ export class InMemoryWorkspaceMembersRepository
     );
     return workspaceMember || null;
   }
+
+  async findUserWorkspaces(userId: string): Promise<WorkspaceMember[]> {
+    const workspaces = await this.workspaceMembers.filter(
+      (workspace) => workspace.getUserId() === userId,
+    );
+    return workspaces;
+  }
 }

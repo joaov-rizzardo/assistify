@@ -14,7 +14,7 @@ export class PrismaProvider implements OnModuleInit {
     this.transactionContext = cls.createNamespace('transactions');
   }
 
-  public get client() {
+  public get client(): PrismaClient {
     return this.transactionContext.get(PRISMA_CLIENT_KEY) || this.prismaClient;
   }
 

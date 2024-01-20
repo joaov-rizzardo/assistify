@@ -6,4 +6,5 @@ export interface CreateWorkspaceProps {
 }
 export abstract class WorkspaceRepository {
   abstract create({}: CreateWorkspaceProps): Promise<Workspace>;
+  abstract findById(workspaceId: string): Promise<Workspace> | null;
 }
