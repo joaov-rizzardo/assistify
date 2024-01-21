@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthenticateUserDTO } from 'src/application/core/dtos/authenticate-user-dto';
 import { AuthenticateUserUseCase } from 'src/application/use-cases/authentication/authenticate-user-use-case';
 
@@ -8,6 +14,7 @@ export class AuthenticateUserController {
     private readonly authenticateUserUseCase: AuthenticateUserUseCase,
   ) {}
   @Post('authenticate')
+  @HttpCode(200)
   async handle(@Body() { email, password }: AuthenticateUserDTO) {
     const result = await this.authenticateUserUseCase.execute({
       email,
