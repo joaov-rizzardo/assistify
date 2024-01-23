@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  NotFoundException,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import {
   UserAuthenticationGuard,
   UserRequest,
@@ -23,11 +17,7 @@ export class GetUserWorkspacesController {
   @Get()
   async create(@Req() req: UserRequest) {
     const userId = req.userId;
-    const result = await this.getUserWorkspacesUseCase.execute(userId);
-    if (result.isLeft()) {
-      throw new NotFoundException('User not found');
-    }
-    const workspaces = result.value;
+    const workspaces = await this.getUserWorkspacesUseCase.execute(userId);
     return workspaces.map((workspace) => ({
       info: WorkspacePresenter.toHTTP(workspace.info),
       member: WorkspaceMemberPresenter.toHTTP(workspace.member),

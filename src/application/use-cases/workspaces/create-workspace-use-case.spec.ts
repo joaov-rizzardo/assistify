@@ -8,8 +8,6 @@ import { User } from 'src/application/core/entities/user';
 import { InMemoryWorkspaceMembersRepository } from 'src/test/repositories/in-memory-workspace-members-repository';
 import { InMemoryUserRepository } from 'src/test/repositories/in-memory-user-repository';
 import { makeUser } from 'src/test/factories/make-user';
-import { v4 as uuid } from 'uuid';
-import { UserNotExistsError } from '../../errors/user-not-exists-error';
 import { RunTransactionOperation } from 'src/application/core/interfaces/database/run-transaction-operation';
 import { FakeTransactionOperation } from 'src/test/database/fake-transaction-operation';
 
@@ -30,47 +28,28 @@ describe('Create workspace use-case', () => {
     sut = new CreateWorkspaceUseCase(
       workspaceRepository,
       workspaceMembersRepository,
-      userRepository,
       transactionOperation,
     );
   });
 
   it('should create new workspace', async () => {
     const { name } = makeWorkspace();
-    const result = await sut.execute({ name, userId: user.getId() });
-    expect(result.isLeft()).toBe(false);
-    if (result.isRight()) {
-      const workspace = result.value;
-      expect(workspace.getOwnerId()).toBe(user.getId());
-      expect(workspace.getName()).toBe(name);
-    }
+    const workspace = await sut.execute({ name, userId: user.getId() });
+    expect(workspace.getOwnerId()).toBe(user.getId());
+    expect(workspace.getName()).toBe(name);
   });
 
   it('should add owner member', async () => {
     const { name } = makeWorkspace();
-    const result = await sut.execute({ name, userId: user.getId() });
-    expect(result.isLeft()).toBe(false);
-    if (result.isRight()) {
-      const workspace = result.value;
-      const member = await workspaceMembersRepository.findWorkspaceMember(
-        workspace.getId(),
-        user.getId(),
-      );
-      expect(member).not.toBe(null);
-      if (member !== null) {
-        expect(member.getUserId()).toBe(user.getId());
-        expect(member.getRole()).toBe('owner');
-      }
-    }
-  });
-
-  it('should verify if user exists', async () => {
-    const { name } = makeWorkspace();
-    const result = await sut.execute({ name, userId: uuid() });
-    expect(result.isLeft()).toBe(true);
-    if (result.isLeft()) {
-      const error = result.value;
-      expect(error).toBeInstanceOf(UserNotExistsError);
+    const workspace = await sut.execute({ name, userId: user.getId() });
+    const member = await workspaceMembersRepository.findWorkspaceMember(
+      workspace.getId(),
+      user.getId(),
+    );
+    expect(member).not.toBe(null);
+    if (member !== null) {
+      expect(member.getUserId()).toBe(user.getId());
+      expect(member.getRole()).toBe('owner');
     }
   });
 });

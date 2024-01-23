@@ -7,11 +7,9 @@ import { User } from 'src/application/core/entities/user';
 import { Workspace } from 'src/application/core/entities/workspace';
 import { makeUser } from 'src/test/factories/make-user';
 import { makeWorkspace } from 'src/test/factories/make-workspace';
-import { v4 as uuid } from 'uuid';
 import { WorkspaceMembersRepository } from 'src/application/core/interfaces/repositories/workspace-members-repository';
 import { InMemoryWorkspaceMembersRepository } from 'src/test/repositories/in-memory-workspace-members-repository';
 import { WorkspaceMember } from 'src/application/core/entities/workspace-member';
-import { UserNotExistsError } from 'src/application/errors/user-not-exists-error';
 
 describe('Get user workspaces use case', () => {
   let sut: GetUserWorkspacesUseCase;
@@ -27,7 +25,6 @@ describe('Get user workspaces use case', () => {
     userRepository = new InMemoryUserRepository();
     workspaceMembersRepository = new InMemoryWorkspaceMembersRepository();
     sut = new GetUserWorkspacesUseCase(
-      userRepository,
       workspaceRepository,
       workspaceMembersRepository,
     );
@@ -51,33 +48,16 @@ describe('Get user workspaces use case', () => {
   });
 
   it('should return user workspaces', async () => {
-    const result = await sut.execute(user.getId());
-    expect(result.isLeft()).toBe(false);
-    if (result.isRight()) {
-      const workspaces = result.value;
-      expect(workspaces.length).toBe(1);
-      const firstWorkspace = workspaces[0];
-      expect(firstWorkspace.info).toBe(workspace);
-      expect(firstWorkspace.member).toBe(member);
-    }
-  });
-
-  it('should check if user exists', async () => {
-    const result = await sut.execute(uuid());
-    expect(result.isRight()).toBe(false);
-    if (result.isLeft()) {
-      const error = result.value;
-      expect(error).toBeInstanceOf(UserNotExistsError);
-    }
+    const workspaces = await sut.execute(user.getId());
+    expect(workspaces.length).toBe(1);
+    const firstWorkspace = workspaces[0];
+    expect(firstWorkspace.info).toBe(workspace);
+    expect(firstWorkspace.member).toBe(member);
   });
 
   it('should return an empty array when user does not has any workspaces', async () => {
     const anotherUser = await userRepository.create(makeUser());
-    const result = await sut.execute(anotherUser.getId());
-    expect(result.isLeft()).toBe(false);
-    if (result.isRight()) {
-      const workspaces = result.value;
-      expect(workspaces.length).toBe(0);
-    }
+    const workspaces = await sut.execute(anotherUser.getId());
+    expect(workspaces.length).toBe(0);
   });
 });

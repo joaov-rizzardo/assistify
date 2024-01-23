@@ -1,13 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Workspace } from 'src/application/core/entities/workspace';
-import { UserRepository } from 'src/application/core/interfaces/repositories/user-repository';
 import { WorkspaceMembersRepository } from 'src/application/core/interfaces/repositories/workspace-members-repository';
 import { WorkspaceRepository } from 'src/application/core/interfaces/repositories/workspace-repository';
-import { Either, left, right } from 'src/application/errors/either';
-import { UserNotExistsError } from '../../errors/user-not-exists-error';
 import { RunTransactionOperation } from 'src/application/core/interfaces/database/run-transaction-operation';
 
-type CreateWorkspaceUseCaseResponse = Either<UserNotExistsError, Workspace>;
+type CreateWorkspaceUseCaseResponse = Workspace;
 
 export interface CreateWorkspaceUseCaseProps {
   name: string;
@@ -19,7 +16,6 @@ export class CreateWorkspaceUseCase {
   constructor(
     private readonly workspaceRepository: WorkspaceRepository,
     private readonly workspaceMembersRepository: WorkspaceMembersRepository,
-    private readonly userRepository: UserRepository,
     private readonly runTransactionOperation: RunTransactionOperation,
   ) {}
 
@@ -27,9 +23,6 @@ export class CreateWorkspaceUseCase {
     name,
     userId,
   }: CreateWorkspaceUseCaseProps): Promise<CreateWorkspaceUseCaseResponse> {
-    if ((await this.userRepository.checkIfUserExistsById(userId)) === false) {
-      return left(new UserNotExistsError(userId));
-    }
     const workspace = await this.runTransactionOperation.execute<Workspace>(
       async () => {
         const workspace = await this.workspaceRepository.create({
@@ -44,6 +37,6 @@ export class CreateWorkspaceUseCase {
         return workspace;
       },
     );
-    return right(workspace);
+    return workspace;
   }
 }

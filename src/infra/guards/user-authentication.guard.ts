@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { UserRepository } from 'src/application/core/interfaces/repositories/user-repository';
 import { TokenGenerator } from 'src/application/core/interfaces/tokens/token-generator';
 
 export interface UserRequest extends Request {
@@ -13,7 +14,10 @@ export interface UserRequest extends Request {
 
 @Injectable()
 export class UserAuthenticationGuard implements CanActivate {
-  constructor(private readonly tokenGenerator: TokenGenerator) {}
+  constructor(
+    private readonly tokenGenerator: TokenGenerator,
+    private readonly userRepository: UserRepository,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<UserRequest>();
@@ -25,6 +29,9 @@ export class UserAuthenticationGuard implements CanActivate {
       throw new UnauthorizedException();
     }
     const data = await this.tokenGenerator.decodeAccessToken(token);
+    if (!(await this.userRepository.checkIfUserExistsById(data.userId))) {
+      throw new UnauthorizedException();
+    }
     request.userId = data.userId;
     return true;
   }
