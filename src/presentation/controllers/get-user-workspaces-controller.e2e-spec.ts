@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
 import { User } from 'src/application/core/entities/user';
-import { PrismaProvider } from 'src/infra/database/prisma/prisma-provider';
 import { JwtTokenGenerator } from 'src/infra/libs/jwt/jwt-token-generator';
 import { TokenFactory } from 'src/test/factories/make-token';
 import { UserFactory } from 'src/test/factories/make-user';
@@ -14,7 +13,6 @@ describe('Get user workspaces (E2E)', () => {
   let userFactory: UserFactory;
   let tokenFactory: TokenFactory;
   let workspaceFactory: WorkspaceFactory;
-  let prisma: PrismaProvider;
   let user: User;
   let accessToken: string;
 
@@ -32,7 +30,6 @@ describe('Get user workspaces (E2E)', () => {
     userFactory = moduleRef.get(UserFactory);
     tokenFactory = moduleRef.get(TokenFactory);
     workspaceFactory = moduleRef.get(WorkspaceFactory);
-    prisma = moduleRef.get(PrismaProvider);
     user = await userFactory.makePrismaUser();
     accessToken = await tokenFactory.makeAccessToken(user);
     await app.init();
@@ -42,13 +39,6 @@ describe('Get user workspaces (E2E)', () => {
     const createdWorkspace = await workspaceFactory.makePrismaWorkspace(
       user.getId(),
     );
-    await prisma.client.workspaceMember.create({
-      data: {
-        role: 'owner',
-        user_id: user.getId(),
-        workspace_id: createdWorkspace.getId(),
-      },
-    });
     const response = await request(app.getHttpServer())
       .get('/workspaces')
       .set('Authorization', `Bearer ${accessToken}`);

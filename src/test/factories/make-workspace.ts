@@ -27,6 +27,14 @@ export class WorkspaceFactory {
       },
     });
 
+    await this.prisma.client.workspaceMember.create({
+      data: {
+        role: 'owner',
+        user_id: userId,
+        workspace_id: createdWorkspace.id,
+      },
+    });
+
     return new Workspace({
       id: createdWorkspace.id,
       ownerId: createdWorkspace.owner_id,

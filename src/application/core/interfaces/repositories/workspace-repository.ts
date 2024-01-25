@@ -1,3 +1,4 @@
+import { UpdateWorkspaceDTO } from '../../dtos/update-workspace-dto';
 import { Workspace } from '../../entities/workspace';
 
 export interface CreateWorkspaceProps {
@@ -7,4 +8,8 @@ export interface CreateWorkspaceProps {
 export abstract class WorkspaceRepository {
   abstract create({}: CreateWorkspaceProps): Promise<Workspace>;
   abstract findById(workspaceId: string): Promise<Workspace> | null;
+  abstract update(
+    workspaceId: string,
+    {}: Partial<UpdateWorkspaceDTO>,
+  ): Promise<Workspace | null>;
 }

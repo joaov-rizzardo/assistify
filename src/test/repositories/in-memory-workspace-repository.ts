@@ -1,3 +1,4 @@
+import { UpdateWorkspaceDTO } from 'src/application/core/dtos/update-workspace-dto';
 import { Workspace } from 'src/application/core/entities/workspace';
 import {
   CreateWorkspaceProps,
@@ -25,5 +26,30 @@ export class InMemoryWorkspaceRepository implements WorkspaceRepository {
       (workspace) => workspace.getId() === workspaceId,
     );
     return workspace || null;
+  }
+
+  async update(
+    workspaceId: string,
+    { name }: Partial<UpdateWorkspaceDTO>,
+  ): Promise<Workspace> {
+    const workspaceIndex = this.workspaces.findIndex(
+      (workspace) => workspace.getId() === workspaceId,
+    );
+    if (workspaceIndex === -1) {
+      return null;
+    }
+    this.workspaces = this.workspaces.map((workspace) => {
+      if (workspace.getId() === workspaceId) {
+        return new Workspace({
+          id: workspace.getId(),
+          name: name || workspace.getName(),
+          createdAt: workspace.getCreatedAt(),
+          ownerId: workspace.getOwnerId(),
+          updatedAt: new Date(),
+        });
+      }
+      return workspace;
+    });
+    return this.workspaces[workspaceIndex];
   }
 }

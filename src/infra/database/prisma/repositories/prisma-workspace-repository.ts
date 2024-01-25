@@ -5,6 +5,7 @@ import {
   WorkspaceRepository,
 } from 'src/application/core/interfaces/repositories/workspace-repository';
 import { PrismaProvider } from '../prisma-provider';
+import { UpdateWorkspaceDTO } from 'src/application/core/dtos/update-workspace-dto';
 
 @Injectable()
 export class PrismaWorkspaceRepository implements WorkspaceRepository {
@@ -36,5 +37,27 @@ export class PrismaWorkspaceRepository implements WorkspaceRepository {
           updatedAt: workspace.updated_at,
         })
       : null;
+  }
+
+  async update(
+    workspaceId: string,
+    args: Partial<UpdateWorkspaceDTO>,
+  ): Promise<Workspace> {
+    const updatedWorkspace = await this.prisma.client.workspaces.update({
+      data: {
+        ...args,
+      },
+      where: { id: workspaceId },
+    });
+    if (!updatedWorkspace) {
+      return null;
+    }
+    return new Workspace({
+      id: updatedWorkspace.id,
+      ownerId: updatedWorkspace.owner_id,
+      name: updatedWorkspace.name,
+      createdAt: updatedWorkspace.created_at,
+      updatedAt: updatedWorkspace.updated_at,
+    });
   }
 }
