@@ -1,7 +1,14 @@
+export type WorkspaceMemberRoles =
+  | 'owner'
+  | 'admin'
+  | 'moderator'
+  | 'editor'
+  | 'member';
+
 export interface WorkspaceMemberContructorProps {
   userId: string;
   workspaceId: string;
-  role: string;
+  role: WorkspaceMemberRoles;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -9,7 +16,7 @@ export interface WorkspaceMemberContructorProps {
 export class WorkspaceMember {
   private userId: string;
   private workspaceId: string;
-  private role: string;
+  private role: WorkspaceMemberRoles;
   private createdAt: Date;
   private updatedAt: Date;
 

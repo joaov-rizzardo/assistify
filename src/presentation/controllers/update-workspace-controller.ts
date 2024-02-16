@@ -13,13 +13,16 @@ import {
   WorkspaceRequest,
 } from 'src/infra/guards/workspace-authentication.guard';
 import { WorkspacePresenter } from '../presenters/workspace-presenter';
+import { Roles } from 'src/infra/guards/roles';
 
 @Controller('workspaces')
-@UseGuards(WorkspaceAuthenticationGuard)
 export class UpdateWorkspaceController {
   constructor(
     private readonly updateWorkspaceUseCase: UpdateWorkspaceUseCase,
   ) {}
+
+  @Roles(['owner', 'admin'])
+  @UseGuards(WorkspaceAuthenticationGuard)
   @Patch()
   async handle(@Body() args: UpdateWorkspaceDTO, @Req() req: WorkspaceRequest) {
     const result = await this.updateWorkspaceUseCase.execute(

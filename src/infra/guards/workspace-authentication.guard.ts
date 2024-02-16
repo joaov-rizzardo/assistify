@@ -9,6 +9,8 @@ import {
   UserRequest,
 } from './user-authentication.guard';
 import { WorkspaceMembersRepository } from 'src/application/core/interfaces/repositories/workspace-members-repository';
+import { Reflector } from '@nestjs/core';
+import { WorkspaceMemberRoles } from 'src/application/core/entities/workspace-member';
 
 export interface WorkspaceRequest extends UserRequest {
   workspace: {
@@ -22,6 +24,7 @@ export class WorkspaceAuthenticationGuard implements CanActivate {
   constructor(
     private readonly userAuthenticationGuard: UserAuthenticationGuard,
     private readonly workspaceMembersRepository: WorkspaceMembersRepository,
+    private readonly reflector: Reflector,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     await this.userAuthenticationGuard.canActivate(context);
@@ -36,6 +39,13 @@ export class WorkspaceAuthenticationGuard implements CanActivate {
         request.userId,
       );
     if (!workspaceMember) {
+      throw new UnauthorizedException();
+    }
+    const roles = this.reflector.get<WorkspaceMemberRoles[]>(
+      'roles',
+      context.getHandler(),
+    );
+    if (roles && !roles.includes(workspaceMember.getRole())) {
       throw new UnauthorizedException();
     }
     request.workspace = {
