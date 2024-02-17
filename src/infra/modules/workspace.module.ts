@@ -7,6 +7,9 @@ import { GetUserWorkspacesController } from 'src/presentation/controllers/get-us
 import { GetUserWorkspacesUseCase } from 'src/application/use-cases/workspaces/get-user-workspaces-use-case';
 import { UpdateWorkspaceController } from 'src/presentation/controllers/update-workspace-controller';
 import { UpdateWorkspaceUseCase } from 'src/application/use-cases/workspaces/update-workspace-use-case';
+import { AddWorkspaceMemberController } from 'src/presentation/controllers/add-workspace-member-controller';
+import { AddWorkspaceMemberUseCase } from 'src/application/use-cases/workspaces/add-workspace-member-use-case';
+import { IsMemberRoleValidator } from 'src/application/core/dtos/custom-validators/is-member-role';
 
 @Module({
   imports: [PrismaModule, AuthModule],
@@ -14,11 +17,14 @@ import { UpdateWorkspaceUseCase } from 'src/application/use-cases/workspaces/upd
     CreateWorkspaceController,
     GetUserWorkspacesController,
     UpdateWorkspaceController,
+    AddWorkspaceMemberController,
   ],
   providers: [
     CreateWorkspaceUseCase,
     GetUserWorkspacesUseCase,
     UpdateWorkspaceUseCase,
+    AddWorkspaceMemberUseCase,
+    IsMemberRoleValidator,
   ],
 })
 export class WorkspaceModule {}
