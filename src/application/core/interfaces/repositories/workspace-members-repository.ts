@@ -16,4 +16,5 @@ export abstract class WorkspaceMembersRepository {
     userId: string,
   ): Promise<WorkspaceMember | null>;
   abstract findUserWorkspaces(userId: string): Promise<WorkspaceMember[]>;
+  abstract remove(userId: string, workspaceId: string): Promise<void>;
 }

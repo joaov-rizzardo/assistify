@@ -43,4 +43,12 @@ export class InMemoryWorkspaceMembersRepository
     );
     return workspaces;
   }
+
+  async remove(userId: string, workspaceId: string): Promise<void> {
+    this.workspaceMembers.filter(
+      (member) =>
+        member.getUserId() !== userId &&
+        member.getWorkspaceId() !== workspaceId,
+    );
+  }
 }

@@ -69,4 +69,13 @@ export class PrismaWorkspaceMembersRepository
         }),
     );
   }
+
+  async remove(userId: string, workspaceId: string): Promise<void> {
+    await this.prisma.client.workspaceMember.deleteMany({
+      where: {
+        user_id: userId,
+        workspace_id: workspaceId,
+      },
+    });
+  }
 }

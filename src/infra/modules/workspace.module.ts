@@ -10,6 +10,8 @@ import { UpdateWorkspaceUseCase } from 'src/application/use-cases/workspaces/upd
 import { AddWorkspaceMemberController } from 'src/presentation/controllers/add-workspace-member-controller';
 import { AddWorkspaceMemberUseCase } from 'src/application/use-cases/workspaces/add-workspace-member-use-case';
 import { IsMemberRoleValidator } from 'src/application/core/dtos/custom-validators/is-member-role';
+import { RemoveWorkspaceMemberController } from 'src/presentation/controllers/remove-workspace-member-controller';
+import { RemoveWorkspaceMemberUseCase } from 'src/application/use-cases/workspaces/remove-workspace-member-use-case';
 
 @Module({
   imports: [PrismaModule, AuthModule],
@@ -18,6 +20,7 @@ import { IsMemberRoleValidator } from 'src/application/core/dtos/custom-validato
     GetUserWorkspacesController,
     UpdateWorkspaceController,
     AddWorkspaceMemberController,
+    RemoveWorkspaceMemberController,
   ],
   providers: [
     CreateWorkspaceUseCase,
@@ -25,6 +28,7 @@ import { IsMemberRoleValidator } from 'src/application/core/dtos/custom-validato
     UpdateWorkspaceUseCase,
     AddWorkspaceMemberUseCase,
     IsMemberRoleValidator,
+    RemoveWorkspaceMemberUseCase,
   ],
 })
 export class WorkspaceModule {}
