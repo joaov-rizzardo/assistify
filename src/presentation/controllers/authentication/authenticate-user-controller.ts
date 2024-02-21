@@ -1,9 +1,9 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpCode,
   Post,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthenticateUserDTO } from 'src/application/core/dtos/authentication/authenticate-user-dto';
 import { AuthenticateUserUseCase } from 'src/application/use-cases/authentication/authenticate-user-use-case';
@@ -21,7 +21,10 @@ export class AuthenticateUserController {
       password,
     });
     if (result.isLeft()) {
-      throw new UnauthorizedException();
+      throw new BadRequestException({
+        message: 'Email or password is invalid',
+        code: 'BAD_CREDENTIALS',
+      });
     }
     const { accessToken, refreshToken } = result.value;
     return {

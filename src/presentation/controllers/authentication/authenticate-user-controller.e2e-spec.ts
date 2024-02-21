@@ -56,7 +56,8 @@ describe('Authenticate user (E2E)', () => {
         email,
         password: wrongPassword,
       });
-    expect(response.statusCode).toBe(401);
+    expect(response.statusCode).toBe(400);
+    expect(response.body.code).toBe('BAD_CREDENTIALS');
   });
 
   test('[POST] /auth/authenticate it should validate email', async () => {
@@ -74,6 +75,7 @@ describe('Authenticate user (E2E)', () => {
         email: wrongEmail,
         password,
       });
-    expect(response.statusCode).toBe(401);
+    expect(response.statusCode).toBe(400);
+    expect(response.body.code).toBe('BAD_CREDENTIALS');
   });
 });

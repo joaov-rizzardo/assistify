@@ -30,8 +30,13 @@ export class WorkspaceAuthenticationGuard implements CanActivate {
     await this.userAuthenticationGuard.canActivate(context);
     const request = context.switchToHttp().getRequest<WorkspaceRequest>();
     const workspaceId = request.headers['x-workspace'] as string;
+    const UNAUTHORIZED_CODE = 'UNAUTHORIZED_WORKSPACE_ACCESS';
+
     if (!workspaceId) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException({
+        message: 'Workspace was not provided',
+        code: UNAUTHORIZED_CODE,
+      });
     }
     const workspaceMember =
       await this.workspaceMembersRepository.findWorkspaceMember(
@@ -39,14 +44,20 @@ export class WorkspaceAuthenticationGuard implements CanActivate {
         request.userId,
       );
     if (!workspaceMember) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException({
+        message: 'User has not access to workspace',
+        code: UNAUTHORIZED_CODE,
+      });
     }
     const roles = this.reflector.get<WorkspaceMemberRoles[]>(
       'roles',
       context.getHandler(),
     );
     if (roles && !roles.includes(workspaceMember.getRole())) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException({
+        message: 'User has not permission to this resource',
+        code: 'UNAUTHORIZED_WORKSPACE_ROLE',
+      });
     }
     request.workspace = {
       id: workspaceMember.getWorkspaceId(),
