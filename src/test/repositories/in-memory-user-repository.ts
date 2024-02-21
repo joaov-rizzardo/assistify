@@ -1,4 +1,4 @@
-import { CreateUserDTO } from 'src/application/core/dtos/create-user-dto';
+import { CreateUserDTO } from 'src/application/core/dtos/user/create-user-dto';
 import { User } from 'src/application/core/entities/user';
 import { UserRepository } from 'src/application/core/interfaces/repositories/user-repository';
 import { v4 as uuid } from 'uuid';

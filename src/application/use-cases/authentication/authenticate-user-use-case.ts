@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { AuthenticateUserDTO } from 'src/application/core/dtos/authenticate-user-dto';
 import { UserRepository } from 'src/application/core/interfaces/repositories/user-repository';
 import { Either, left, right } from 'src/application/errors/either';
 import { AuthenticationBadCredentialsError } from './errors/authentication-bad-credentials-error';
 import { TokenGenerator } from 'src/application/core/interfaces/tokens/token-generator';
 import { PasswordEncrypter } from 'src/application/core/interfaces/cryptography/password-encrypter';
+import { AuthenticateUserDTO } from 'src/application/core/dtos/authentication/authenticate-user-dto';
 
 type AuthenticateUserUseCaseResponse = Either<
   AuthenticationBadCredentialsError,

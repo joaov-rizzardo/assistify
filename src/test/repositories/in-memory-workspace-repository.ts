@@ -1,4 +1,4 @@
-import { UpdateWorkspaceDTO } from 'src/application/core/dtos/update-workspace-dto';
+import { UpdateWorkspaceDTO } from 'src/application/core/dtos/workspace/update-workspace-dto';
 import { Workspace } from 'src/application/core/entities/workspace';
 import {
   CreateWorkspaceProps,

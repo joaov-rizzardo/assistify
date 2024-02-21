@@ -10,7 +10,7 @@ import {
 @ValidatorConstraint({ async: false })
 export class IsMemberRoleValidator implements ValidatorConstraintInterface {
   validate(value: any) {
-    const roles = new Set(['admin', 'moderator', 'editor', 'member']);
+    const roles = new Set(['owner', 'admin', 'moderator', 'editor', 'member']);
     return typeof value === 'string' && roles.has(value);
   }
 }

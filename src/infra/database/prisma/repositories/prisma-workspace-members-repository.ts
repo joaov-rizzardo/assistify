@@ -1,4 +1,7 @@
-import { WorkspaceMember } from 'src/application/core/entities/workspace-member';
+import {
+  WorkspaceMember,
+  WorkspaceMemberRoles,
+} from 'src/application/core/entities/workspace-member';
 import {
   AddMemberProps,
   WorkspaceMembersRepository,
@@ -76,6 +79,41 @@ export class PrismaWorkspaceMembersRepository
         user_id: userId,
         workspace_id: workspaceId,
       },
+    });
+  }
+
+  async changeMemberRole(
+    userId: string,
+    workspaceId: string,
+    role: WorkspaceMemberRoles,
+  ): Promise<WorkspaceMember> {
+    if (
+      (await this.prisma.client.workspaceMember.count({
+        where: {
+          workspace_id: workspaceId,
+          user_id: userId,
+        },
+      })) === 0
+    ) {
+      return null;
+    }
+    const updatedMember = await this.prisma.client.workspaceMember.update({
+      data: {
+        role,
+      },
+      where: {
+        user_id_workspace_id: {
+          user_id: userId,
+          workspace_id: workspaceId,
+        },
+      },
+    });
+    return new WorkspaceMember({
+      userId: updatedMember.user_id,
+      workspaceId: updatedMember.workspace_id,
+      role: updatedMember.role,
+      createdAt: updatedMember.created_at,
+      updatedAt: updatedMember.updated_at,
     });
   }
 }

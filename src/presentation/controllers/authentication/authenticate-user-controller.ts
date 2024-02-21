@@ -5,7 +5,7 @@ import {
   Post,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthenticateUserDTO } from 'src/application/core/dtos/authenticate-user-dto';
+import { AuthenticateUserDTO } from 'src/application/core/dtos/authentication/authenticate-user-dto';
 import { AuthenticateUserUseCase } from 'src/application/use-cases/authentication/authenticate-user-use-case';
 
 @Controller('auth')

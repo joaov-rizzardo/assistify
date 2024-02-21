@@ -1,5 +1,6 @@
 import { IsUUID } from 'class-validator';
 import { IsMemberRole } from './custom-validators/is-member-role';
+import { WorkspaceMemberRoles } from '../../entities/workspace-member';
 
 export class AddWorkspaceMemberDTO {
   @IsUUID(undefined, {
@@ -10,5 +11,5 @@ export class AddWorkspaceMemberDTO {
   @IsMemberRole({
     message: 'role field must be a valid role',
   })
-  role: 'admin' | 'moderator' | 'editor' | 'member';
+  role: WorkspaceMemberRoles;
 }

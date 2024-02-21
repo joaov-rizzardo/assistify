@@ -3,9 +3,9 @@ import {
   UserAuthenticationGuard,
   UserRequest,
 } from 'src/infra/guards/user-authentication.guard';
-import { WorkspacePresenter } from '../presenters/workspace-presenter';
+import { WorkspacePresenter } from '../../presenters/workspace-presenter';
 import { GetUserWorkspacesUseCase } from 'src/application/use-cases/workspaces/get-user-workspaces-use-case';
-import { WorkspaceMemberPresenter } from '../presenters/workspace-member-presenter';
+import { WorkspaceMemberPresenter } from '../../presenters/workspace-member-presenter';
 
 @UseGuards(UserAuthenticationGuard)
 @Controller('workspaces')

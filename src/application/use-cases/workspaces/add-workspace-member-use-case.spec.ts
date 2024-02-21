@@ -11,6 +11,7 @@ import { WorkspaceRepository } from 'src/application/core/interfaces/repositorie
 import { InMemoryWorkspaceRepository } from 'src/test/repositories/in-memory-workspace-repository';
 import { v4 as uuid } from 'uuid';
 import { UserNotExistsError } from 'src/application/errors/user-not-exists-error';
+import { CannotAddMemberAsOwnerError } from './errors/cannot-add-member-as-owner-error';
 
 describe('Add workspace member use case', () => {
   let userRepository: UserRepository;
@@ -71,6 +72,18 @@ describe('Add workspace member use case', () => {
     if (result.isLeft()) {
       const error = result.value;
       expect(error).toBeInstanceOf(UserNotExistsError);
+    }
+  });
+
+  it("shouldn't add member as a owner", async () => {
+    const result = await sut.execute(workspace.getId(), {
+      role: 'owner',
+      userId: uuid(),
+    });
+    expect(result.isLeft()).toBe(true);
+    if (result.isLeft()) {
+      const error = result.value;
+      expect(error).toBeInstanceOf(CannotAddMemberAsOwnerError);
     }
   });
 });

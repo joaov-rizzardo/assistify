@@ -5,7 +5,7 @@ import {
   WorkspaceRepository,
 } from 'src/application/core/interfaces/repositories/workspace-repository';
 import { PrismaProvider } from '../prisma-provider';
-import { UpdateWorkspaceDTO } from 'src/application/core/dtos/update-workspace-dto';
+import { UpdateWorkspaceDTO } from 'src/application/core/dtos/workspace/update-workspace-dto';
 
 @Injectable()
 export class PrismaWorkspaceRepository implements WorkspaceRepository {

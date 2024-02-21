@@ -5,7 +5,7 @@ import {
   Post,
   UnauthorizedException,
 } from '@nestjs/common';
-import { RefreshTokenDTO } from 'src/application/core/dtos/refresh-token-dto';
+import { RefreshTokenDTO } from 'src/application/core/dtos/authentication/refresh-token-dto';
 import { RefreshTokenUseCase } from 'src/application/use-cases/authentication/refresh-token-use-case';
 
 @Controller('auth/token')

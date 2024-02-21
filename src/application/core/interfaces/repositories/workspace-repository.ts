@@ -1,4 +1,4 @@
-import { UpdateWorkspaceDTO } from '../../dtos/update-workspace-dto';
+import { UpdateWorkspaceDTO } from '../../dtos/workspace/update-workspace-dto';
 import { Workspace } from '../../entities/workspace';
 
 export interface CreateWorkspaceProps {

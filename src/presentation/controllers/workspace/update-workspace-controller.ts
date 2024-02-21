@@ -6,14 +6,14 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { UpdateWorkspaceDTO } from 'src/application/core/dtos/update-workspace-dto';
 import { UpdateWorkspaceUseCase } from 'src/application/use-cases/workspaces/update-workspace-use-case';
 import {
   WorkspaceAuthenticationGuard,
   WorkspaceRequest,
 } from 'src/infra/guards/workspace-authentication.guard';
-import { WorkspacePresenter } from '../presenters/workspace-presenter';
+import { WorkspacePresenter } from '../../presenters/workspace-presenter';
 import { Roles } from 'src/infra/guards/roles';
+import { UpdateWorkspaceDTO } from 'src/application/core/dtos/workspace/update-workspace-dto';
 
 @Controller('workspaces')
 export class UpdateWorkspaceController {

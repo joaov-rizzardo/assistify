@@ -12,8 +12,10 @@ import {
 } from 'src/infra/guards/workspace-authentication.guard';
 import { Roles } from 'src/infra/guards/roles';
 import { AddWorkspaceMemberUseCase } from 'src/application/use-cases/workspaces/add-workspace-member-use-case';
-import { AddWorkspaceMemberDTO } from 'src/application/core/dtos/add-workspace-member-dto';
-import { WorkspaceMemberPresenter } from '../presenters/workspace-member-presenter';
+import { WorkspaceMemberPresenter } from '../../presenters/workspace-member-presenter';
+import { UserNotExistsError } from 'src/application/errors/user-not-exists-error';
+import { CannotAddMemberAsOwnerError } from 'src/application/use-cases/workspaces/errors/cannot-add-member-as-owner-error';
+import { AddWorkspaceMemberDTO } from 'src/application/core/dtos/workspace/add-workspace-member-dto';
 
 @Controller('workspaces/member')
 export class AddWorkspaceMemberController {
@@ -34,9 +36,23 @@ export class AddWorkspaceMemberController {
       userId,
     });
     if (result.isLeft()) {
-      throw new BadRequestException('User not exists');
+      const error = result.value;
+      if (error instanceof UserNotExistsError) {
+        throw new BadRequestException({
+          message: 'User not exists',
+          code: 'USER_NOT_EXISTS',
+        });
+      }
+      if (error instanceof CannotAddMemberAsOwnerError) {
+        throw new BadRequestException({
+          message: 'Cannot add member as a owner',
+          code: 'CANNOT_ADD_OWNER',
+        });
+      }
     }
-    const member = result.value;
-    return WorkspaceMemberPresenter.toHTTP(member);
+    if (result.isRight()) {
+      const member = result.value;
+      return WorkspaceMemberPresenter.toHTTP(member);
+    }
   }
 }

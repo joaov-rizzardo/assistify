@@ -1,4 +1,7 @@
-import { WorkspaceMember } from 'src/application/core/entities/workspace-member';
+import {
+  WorkspaceMember,
+  WorkspaceMemberRoles,
+} from 'src/application/core/entities/workspace-member';
 import {
   AddMemberProps,
   WorkspaceMembersRepository,
@@ -49,6 +52,35 @@ export class InMemoryWorkspaceMembersRepository
       (member) =>
         member.getUserId() !== userId &&
         member.getWorkspaceId() !== workspaceId,
+    );
+  }
+
+  async changeMemberRole(
+    userId: string,
+    workspaceId: string,
+    role: WorkspaceMemberRoles,
+  ): Promise<WorkspaceMember> {
+    this.workspaceMembers = this.workspaceMembers.map((member) => {
+      if (
+        member.getUserId() === userId &&
+        member.getWorkspaceId() === workspaceId
+      ) {
+        return new WorkspaceMember({
+          workspaceId: member.getWorkspaceId(),
+          userId: member.getUserId(),
+          createdAt: member.getCreatedAt(),
+          role: role,
+          updatedAt: new Date(),
+        });
+      }
+      return member;
+    });
+    return (
+      this.workspaceMembers.find(
+        (member) =>
+          member.getUserId() === userId &&
+          member.getWorkspaceId() === workspaceId,
+      ) || null
     );
   }
 }

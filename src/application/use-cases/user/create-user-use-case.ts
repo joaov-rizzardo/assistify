@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDTO } from '../../core/dtos/create-user-dto';
+import { CreateUserDTO } from '../../core/dtos/user/create-user-dto';
 import { UserRepository } from '../../core/interfaces/repositories/user-repository';
 import { Either, left, right } from 'src/application/errors/either';
 import { UserAlreadyExistsError } from './errors/user-already-exists-error';
