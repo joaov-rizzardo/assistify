@@ -10,6 +10,7 @@ describe('Workspace member presenter', () => {
       userId: uuid(),
       workspaceId: uuid(),
       role: 'admin',
+      status: 'accepted',
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -19,6 +20,7 @@ describe('Workspace member presenter', () => {
     expect(result.userId).toBe(workspaceMember.getUserId());
     expect(result.workspaceId).toBe(workspaceMember.getWorkspaceId());
     expect(result.role).toBe(workspaceMember.getRole());
+    expect(result.status).toBe(workspaceMember.getStatus());
     expect(result.createdAt).toBe(workspaceMember.getCreatedAt());
     expect(result.updatedAt).toBe(workspaceMember.getUpdatedAt());
   });

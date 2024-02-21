@@ -75,6 +75,7 @@ describe('Add workspace member (E2E)', () => {
     const addedMember = response.body;
     expect(addedMember.userId).toBe(userMember.getId());
     expect(addedMember.role).toBe('editor');
+    expect(addedMember.status).toBe('invited');
     expect(addedMember.workspaceId).toBe(workspace.getId());
     expect(addedMember).toHaveProperty('createdAt');
     expect(addedMember).toHaveProperty('updatedAt');

@@ -1,12 +1,14 @@
 import {
   WorkspaceMember,
   WorkspaceMemberRoles,
+  WorkspaceMemberStatus,
 } from '../../entities/workspace-member';
 
 export interface AddMemberProps {
   workspaceId: string;
   userId: string;
   role: WorkspaceMemberRoles;
+  status: WorkspaceMemberStatus;
 }
 
 export abstract class WorkspaceMembersRepository {

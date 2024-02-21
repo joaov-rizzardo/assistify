@@ -32,6 +32,7 @@ export class WorkspaceFactory {
         role: 'owner',
         user_id: userId,
         workspace_id: createdWorkspace.id,
+        status: 'accepted',
       },
     });
 

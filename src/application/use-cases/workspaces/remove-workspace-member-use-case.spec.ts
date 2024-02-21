@@ -20,6 +20,7 @@ describe('Remove workspace member use case', () => {
       workspaceId: workspaceId,
       role: 'member',
       userId: uuid(),
+      status: 'accepted',
     });
     const result = await sut.execute(workspaceId, member.getUserId());
     expect(result.isRight()).toBe(true);
@@ -39,6 +40,7 @@ describe('Remove workspace member use case', () => {
       workspaceId: workspaceId,
       role: 'owner',
       userId: uuid(),
+      status: 'accepted',
     });
     const result = await sut.execute(workspaceId, member.getUserId());
     expect(result.isLeft()).toBe(true);

@@ -50,6 +50,7 @@ describe('Create workspace use-case', () => {
     if (member !== null) {
       expect(member.getUserId()).toBe(user.getId());
       expect(member.getRole()).toBe('owner');
+      expect(member.getStatus()).toBe('accepted');
     }
   });
 });

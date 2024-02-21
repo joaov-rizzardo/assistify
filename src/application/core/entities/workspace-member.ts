@@ -5,10 +5,13 @@ export type WorkspaceMemberRoles =
   | 'editor'
   | 'member';
 
+export type WorkspaceMemberStatus = 'invited' | 'accepted';
+
 export interface WorkspaceMemberContructorProps {
   userId: string;
   workspaceId: string;
   role: WorkspaceMemberRoles;
+  status: WorkspaceMemberStatus;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,6 +20,7 @@ export class WorkspaceMember {
   private userId: string;
   private workspaceId: string;
   private role: WorkspaceMemberRoles;
+  private status: WorkspaceMemberStatus;
   private createdAt: Date;
   private updatedAt: Date;
 
@@ -24,12 +28,14 @@ export class WorkspaceMember {
     userId,
     workspaceId,
     role,
+    status,
     createdAt,
     updatedAt,
   }: WorkspaceMemberContructorProps) {
     this.userId = userId;
     this.workspaceId = workspaceId;
     this.role = role;
+    this.status = status;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -44,6 +50,10 @@ export class WorkspaceMember {
 
   public getRole() {
     return this.role;
+  }
+
+  public getStatus() {
+    return this.status;
   }
 
   public getCreatedAt() {

@@ -21,6 +21,7 @@ describe('Change workspace member role use case', () => {
       workspaceId,
       userId: memberId,
       role: 'admin',
+      status: 'accepted',
     });
     const result = await sut.execute(workspaceId, memberId, 'member');
     expect(result.isRight()).toBe(true);
@@ -46,6 +47,7 @@ describe('Change workspace member role use case', () => {
       workspaceId,
       userId: memberId,
       role: 'admin',
+      status: 'accepted',
     });
     const result = await sut.execute(workspaceId, memberId, 'owner');
     expect(result.isLeft()).toBe(true);

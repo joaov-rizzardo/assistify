@@ -44,6 +44,7 @@ describe('Get user workspaces use case', () => {
       userId: user.getId(),
       workspaceId: workspace.getId(),
       role: 'owner',
+      status: 'accepted',
     });
   });
 

@@ -33,6 +33,7 @@ export class AddWorkspaceMemberUseCase {
       workspaceId,
       role,
       userId,
+      status: 'invited',
     });
     return right(member);
   }

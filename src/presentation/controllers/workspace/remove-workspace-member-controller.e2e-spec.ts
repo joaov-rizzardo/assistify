@@ -49,6 +49,7 @@ describe('Remove workspace member (E2E)', () => {
       userId: userMember.getId(),
       workspaceId: workspace.getId(),
       role: 'editor',
+      status: 'accepted',
     });
     const response = await request(app.getHttpServer())
       .delete('/workspaces/member/remove/' + userMember.getId())

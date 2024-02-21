@@ -86,4 +86,23 @@ describe('Add workspace member use case', () => {
       expect(error).toBeInstanceOf(CannotAddMemberAsOwnerError);
     }
   });
+
+  it('should add member with status invited', async () => {
+    const userData = makeUser();
+    const memberUser = await userRepository.create({
+      name: userData.name,
+      lastName: userData.lastName,
+      email: userData.email,
+      password: userData.password,
+    });
+    const result = await sut.execute(workspace.getId(), {
+      role: 'admin',
+      userId: memberUser.getId(),
+    });
+    expect(result.isRight()).toBe(true);
+    if (result.isRight()) {
+      const member = result.value;
+      expect(member.getStatus()).toBe('invited');
+    }
+  });
 });

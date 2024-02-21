@@ -18,16 +18,32 @@ model BaileysSession {
 }
 
 model Users {
-  id              String            @id @default(uuid())
-  name            String
-  last_name       String
-  email           String
-  password        String
-  profile_picture String?
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @updatedAt
-  WorkspaceMember WorkspaceMember[]
-  Workspaces      Workspaces[]
+  id                String              @id @default(uuid())
+  name              String
+  last_name         String
+  email             String
+  password          String
+  profile_picture   String?
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  WorkspaceMember   WorkspaceMember[]
+  Workspaces        Workspaces[]
+  UserNotifications UserNotifications[]
+}
+
+model UserNotifications {
+  id         String           @id @default(uuid())
+  user_id    String
+  user       Users            @relation(fields: [user_id], references: [id])
+  type       NotificationType
+  date       DateTime         @default(now())
+  reade      Boolean          @default(false)
+  created_at DateTime         @default(now())
+  updated_at DateTime         @updatedAt
+}
+
+enum NotificationType {
+  workspace_invite
 }
 
 model Workspaces {
@@ -44,12 +60,13 @@ model Workspaces {
 
 model WorkspaceMember {
   user_id      String
-  user         Users      @relation(fields: [user_id], references: [id])
+  user         Users        @relation(fields: [user_id], references: [id])
   workspace_id String
-  workspace    Workspaces @relation(fields: [workspace_id], references: [id])
+  workspace    Workspaces   @relation(fields: [workspace_id], references: [id])
   role         MemberRole
-  created_at   DateTime   @default(now())
-  updated_at   DateTime   @updatedAt
+  status       MemberStatus
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
 
   @@id([user_id, workspace_id])
 }
@@ -60,6 +77,11 @@ enum MemberRole {
   moderator
   editor
   member
+}
+
+enum MemberStatus {
+  invited
+  accepted
 }
 
 model WorkspaceInstance {

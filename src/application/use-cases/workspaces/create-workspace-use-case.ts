@@ -33,6 +33,7 @@ export class CreateWorkspaceUseCase {
           workspaceId: workspace.getId(),
           userId,
           role: 'owner',
+          status: 'accepted',
         });
         return workspace;
       },

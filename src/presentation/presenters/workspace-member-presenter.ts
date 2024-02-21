@@ -6,6 +6,7 @@ export class WorkspaceMemberPresenter {
       userId: workspaceMember.getUserId(),
       workspaceId: workspaceMember.getWorkspaceId(),
       role: workspaceMember.getRole(),
+      status: workspaceMember.getStatus(),
       createdAt: workspaceMember.getCreatedAt(),
       updatedAt: workspaceMember.getUpdatedAt(),
     };

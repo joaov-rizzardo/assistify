@@ -48,6 +48,7 @@ describe('Change workspace member role (E2E)', () => {
       userId: userMember.getId(),
       workspaceId: workspace.getId(),
       role: 'editor',
+      status: 'accepted',
     });
     await app.init();
   });

@@ -15,11 +15,13 @@ export class InMemoryWorkspaceMembersRepository
   async add({
     userId,
     role,
+    status,
     workspaceId,
   }: AddMemberProps): Promise<WorkspaceMember> {
     const workspaceMember = new WorkspaceMember({
       userId,
       role,
+      status: status,
       workspaceId,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -70,6 +72,7 @@ export class InMemoryWorkspaceMembersRepository
           userId: member.getUserId(),
           createdAt: member.getCreatedAt(),
           role: role,
+          status: member.getStatus(),
           updatedAt: new Date(),
         });
       }
