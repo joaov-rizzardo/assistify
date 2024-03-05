@@ -36,8 +36,9 @@ model UserNotifications {
   user_id    String
   user       Users            @relation(fields: [user_id], references: [id])
   type       NotificationType
+  content    Json?
   date       DateTime         @default(now())
-  reade      Boolean          @default(false)
+  read       Boolean          @default(false)
   created_at DateTime         @default(now())
   updated_at DateTime         @updatedAt
 }
