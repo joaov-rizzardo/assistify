@@ -1,20 +1,7 @@
-import { z } from 'zod';
-
-const UserNotificationTypesSchema = z.enum(['workspace_invite']);
-
-export type UserNotificationTypes = z.infer<typeof UserNotificationTypesSchema>;
-
-const WorkspaceInviteSchema = z.object({
-  type: z.literal('workspace_invite'),
-  workspaceId: z.string(),
-  invitingUserId: z.string(),
-});
-
-const UserNotificationContentSchema = WorkspaceInviteSchema;
-
-export type UserNotificationContentType = z.infer<
-  typeof UserNotificationContentSchema
->;
+import {
+  UserNotificationContentType,
+  UserNotificationTypes,
+} from './schemas/user-notification-schema';
 
 type UserNotificationConstructor = {
   id: string;
@@ -78,5 +65,18 @@ export class UserNotification {
 
   public getUpdatedAt() {
     return this.updatedAt;
+  }
+
+  public toObject() {
+    return {
+      id: this.id,
+      userId: this.userId,
+      type: this.type,
+      content: this.content,
+      date: this.date,
+      read: this.read,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
   }
 }

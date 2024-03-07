@@ -10,6 +10,7 @@ import { GlobalExceptionFilter } from './infra/filters/global-exception-filter';
 import { AuthModule } from './infra/modules/auth.module';
 import { WorkspaceModule } from './infra/modules/workspace.module';
 import { ClsModule } from 'nestjs-cls';
+import { SocketModule } from './infra/modules/socket.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ClsModule } from 'nestjs-cls';
     LogsModule,
     AuthModule,
     BaileysModule,
+    SocketModule,
     UserModule,
     WorkspaceModule,
     AuthenticationModule,
