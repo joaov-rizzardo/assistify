@@ -12,6 +12,8 @@ import { WorkspaceMembersRepository } from 'src/application/core/interfaces/repo
 import { PrismaWorkspaceMembersRepository } from './repositories/prisma-workspace-members-repository';
 import { PrismaTransactionOperation } from './prisma-transaction-operation';
 import { RunTransactionOperation } from 'src/application/core/interfaces/database/run-transaction-operation';
+import { UserNotificationRepository } from 'src/application/core/interfaces/repositories/user-notification-repository';
+import { PrismaUserNotificationRepository } from './repositories/prisma-user-notification-repository';
 
 @Module({
   imports: [],
@@ -41,6 +43,10 @@ import { RunTransactionOperation } from 'src/application/core/interfaces/databas
       provide: RunTransactionOperation,
       useClass: PrismaTransactionOperation,
     },
+    {
+      provide: UserNotificationRepository,
+      useClass: PrismaUserNotificationRepository,
+    },
   ],
   exports: [
     PrismaProvider,
@@ -50,6 +56,7 @@ import { RunTransactionOperation } from 'src/application/core/interfaces/databas
     WorkspaceRepository,
     WorkspaceMembersRepository,
     RunTransactionOperation,
+    UserNotificationRepository,
   ],
 })
 export class PrismaModule {

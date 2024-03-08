@@ -4,7 +4,6 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { UserSocketEvents } from './events/user-socket-events';
 import { UseGuards, UsePipes } from '@nestjs/common';
 import { SocketUserAuthenticationGuard } from 'src/infra/guards/socket-user-authentication.guard';
 import {
@@ -16,6 +15,7 @@ import {
   LeaveUserRoomDTO,
   LeaveUserRoomSchema,
 } from 'src/application/core/dtos/socket/leave-user-room-dto';
+import { UserSocketEventsOutput } from './events/user-socket-events';
 
 @WebSocketGateway({
   cors: {
@@ -28,7 +28,7 @@ export class UserSocketGateway {
 
   @UsePipes(new WsZodValidationPipe(JoinUserRoomSchema))
   @UseGuards(SocketUserAuthenticationGuard)
-  @SubscribeMessage(UserSocketEvents.Join)
+  @SubscribeMessage(UserSocketEventsOutput.Join)
   onJoin(socket: Socket, { userId }: JoinUserRoomDTO) {
     const userRoomName = this.getUserRoomName(userId);
     socket.join(userRoomName);
@@ -36,7 +36,7 @@ export class UserSocketGateway {
 
   @UsePipes(new WsZodValidationPipe(LeaveUserRoomSchema))
   @UseGuards(SocketUserAuthenticationGuard)
-  @SubscribeMessage(UserSocketEvents.Leave)
+  @SubscribeMessage(UserSocketEventsOutput.Leave)
   onLeave(socket: Socket, { userId }: LeaveUserRoomDTO) {
     const userRoomName = this.getUserRoomName(userId);
     socket.leave(userRoomName);

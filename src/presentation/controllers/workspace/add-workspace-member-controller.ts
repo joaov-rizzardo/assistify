@@ -34,6 +34,7 @@ export class AddWorkspaceMemberController {
     const result = await this.addWorkspacemMemberUseCase.execute(workspaceId, {
       role,
       userId,
+      invitingUserId: req.userId,
     });
     if (result.isLeft()) {
       const error = result.value;
