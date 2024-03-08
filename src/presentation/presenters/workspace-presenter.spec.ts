@@ -25,4 +25,12 @@ describe('Workspace presenter', () => {
     expect(data.ownerId).toBe(workspace.getOwnerId());
     expect(data.updatedAt).toBe(workspace.getUpdatedAt());
   });
+
+  it('should present workspace to basic', () => {
+    const data = WorkspacePresenter.toBasic(workspace);
+    expect(data.createdAt).toBe(workspace.getCreatedAt());
+    expect(data.id).toBe(workspace.getId());
+    expect(data.name).toBe(workspace.getName());
+    expect(data.ownerId).toBe(workspace.getOwnerId());
+  });
 });

@@ -24,10 +24,11 @@ export class PrismaWorkspaceRepository implements WorkspaceRepository {
     });
   }
 
-  async findById(workspaceId: string): Promise<Workspace> {
+  async findById(workspaceId: string): Promise<Workspace | null> {
     const workspace = await this.prisma.client.workspaces.findFirst({
       where: { id: workspaceId },
     });
+    if (!workspace) return null;
     return workspace
       ? new Workspace({
           id: workspace.id,

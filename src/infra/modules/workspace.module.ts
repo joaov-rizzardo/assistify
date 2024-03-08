@@ -16,6 +16,8 @@ import { IsMemberRoleValidator } from 'src/application/core/dtos/workspace/custo
 import { ChangeWorkspaceMemberRoleController } from 'src/presentation/controllers/workspace/change-workspace-member-role-controller';
 import { WorkspaceInviteNotification } from 'src/application/services/notification/workspace-invite-notification';
 import { SocketModule } from './socket.module';
+import { GetWorkspaceBasicInfoController } from 'src/presentation/controllers/workspace/get-workspace-basic-info-controller';
+import { GetWorkspaceUseCase } from 'src/application/use-cases/workspaces/get-workspace-use-case';
 
 @Module({
   imports: [PrismaModule, SocketModule, AuthModule],
@@ -26,6 +28,7 @@ import { SocketModule } from './socket.module';
     AddWorkspaceMemberController,
     RemoveWorkspaceMemberController,
     ChangeWorkspaceMemberRoleController,
+    GetWorkspaceBasicInfoController,
   ],
   providers: [
     CreateWorkspaceUseCase,
@@ -36,6 +39,7 @@ import { SocketModule } from './socket.module';
     RemoveWorkspaceMemberUseCase,
     ChangeWorkspaceMemberRoleUseCase,
     WorkspaceInviteNotification,
+    GetWorkspaceUseCase,
   ],
 })
 export class WorkspaceModule {}

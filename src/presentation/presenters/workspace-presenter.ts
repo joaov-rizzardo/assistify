@@ -10,4 +10,13 @@ export class WorkspacePresenter {
       updatedAt: workspace.getUpdatedAt(),
     };
   }
+
+  static toBasic(workspace: Workspace) {
+    return {
+      id: workspace.getId(),
+      name: workspace.getName(),
+      ownerId: workspace.getOwnerId(),
+      createdAt: workspace.getCreatedAt(),
+    };
+  }
 }
