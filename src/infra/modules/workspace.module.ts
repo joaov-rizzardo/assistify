@@ -14,10 +14,10 @@ import { RemoveWorkspaceMemberUseCase } from 'src/application/use-cases/workspac
 import { ChangeWorkspaceMemberRoleUseCase } from 'src/application/use-cases/workspaces/change-workspace-member-role-use-case';
 import { IsMemberRoleValidator } from 'src/application/core/dtos/workspace/custom-validators/is-member-role';
 import { ChangeWorkspaceMemberRoleController } from 'src/presentation/controllers/workspace/change-workspace-member-role-controller';
-import { WorkspaceInviteNotification } from 'src/application/services/notification/workspace-invite-notification';
 import { SocketModule } from './socket.module';
 import { GetWorkspaceBasicInfoController } from 'src/presentation/controllers/workspace/get-workspace-basic-info-controller';
 import { GetWorkspaceUseCase } from 'src/application/use-cases/workspaces/get-workspace-use-case';
+import { SendWorkspaceInviteUseCase } from 'src/application/use-cases/workspaces/send-workspace-invite-use-case';
 
 @Module({
   imports: [PrismaModule, SocketModule, AuthModule],
@@ -38,7 +38,7 @@ import { GetWorkspaceUseCase } from 'src/application/use-cases/workspaces/get-wo
     IsMemberRoleValidator,
     RemoveWorkspaceMemberUseCase,
     ChangeWorkspaceMemberRoleUseCase,
-    WorkspaceInviteNotification,
+    SendWorkspaceInviteUseCase,
     GetWorkspaceUseCase,
   ],
 })

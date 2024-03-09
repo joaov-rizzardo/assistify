@@ -5,8 +5,8 @@ import { WorkspaceMembersRepository } from 'src/application/core/interfaces/repo
 import { Either, left, right } from 'src/application/errors/either';
 import { UserNotExistsError } from 'src/application/errors/user-not-exists-error';
 import { CannotAddMemberAsOwnerError } from './errors/cannot-add-member-as-owner-error';
-import { WorkspaceInviteNotification } from 'src/application/services/notification/workspace-invite-notification';
 import { WorkspaceMemberRoles } from './types/workspace-member-roles';
+import { SendWorkspaceInviteUseCase } from './send-workspace-invite-use-case';
 
 export type AddWorkspaceMemberUseCaseResponse = Either<
   UserNotExistsError | CannotAddMemberAsOwnerError,
@@ -23,7 +23,7 @@ export class AddWorkspaceMemberUseCase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly workspaceMembersRepository: WorkspaceMembersRepository,
-    private readonly workspaceInviteNotification: WorkspaceInviteNotification,
+    private readonly sendWorkspaceInviteUseCase: SendWorkspaceInviteUseCase,
   ) {}
 
   public async execute(
@@ -42,7 +42,7 @@ export class AddWorkspaceMemberUseCase {
       userId,
       status: 'invited',
     });
-    await this.workspaceInviteNotification.create({
+    await this.sendWorkspaceInviteUseCase.execute({
       invitingUserId: invitingUserId,
       userId,
       workspaceId,

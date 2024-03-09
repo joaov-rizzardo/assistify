@@ -14,16 +14,16 @@ import { UserNotExistsError } from 'src/application/errors/user-not-exists-error
 import { CannotAddMemberAsOwnerError } from './errors/cannot-add-member-as-owner-error';
 import { UserNotificationRepository } from 'src/application/core/interfaces/repositories/user-notification-repository';
 import { InMemoryUserNotificationRepository } from 'src/test/repositories/in-memory-user-notification-repository';
-import { WorkspaceInviteNotification } from 'src/application/services/notification/workspace-invite-notification';
 import { AbstractUserSocketEmitter } from 'src/application/core/interfaces/socket/abstract-user-socket-emitter';
 import { FakeUserSocketEmitter } from 'src/test/socket/fake-user-socket-emitter';
+import { SendWorkspaceInviteUseCase } from './send-workspace-invite-use-case';
 
 describe('Add workspace member use case', () => {
   let userRepository: UserRepository;
   let workspaceRepository: WorkspaceRepository;
   let workspaceMembersRepository: WorkspaceMembersRepository;
   let userNotificationRepository: UserNotificationRepository;
-  let workspaceInviteNotification: WorkspaceInviteNotification;
+  let sendWorkspaceInviteUseCase: SendWorkspaceInviteUseCase;
   let userSocketEmitter: AbstractUserSocketEmitter;
   let sut: AddWorkspaceMemberUseCase;
   let user: User;
@@ -35,14 +35,14 @@ describe('Add workspace member use case', () => {
     workspaceMembersRepository = new InMemoryWorkspaceMembersRepository();
     userNotificationRepository = new InMemoryUserNotificationRepository();
     userSocketEmitter = new FakeUserSocketEmitter();
-    workspaceInviteNotification = new WorkspaceInviteNotification(
+    sendWorkspaceInviteUseCase = new SendWorkspaceInviteUseCase(
       userSocketEmitter,
       userNotificationRepository,
     );
     sut = new AddWorkspaceMemberUseCase(
       userRepository,
       workspaceMembersRepository,
-      workspaceInviteNotification,
+      sendWorkspaceInviteUseCase,
     );
     const userData = makeUser();
     user = await userRepository.create({

@@ -10,13 +10,13 @@ type CreateArgsType = {
 };
 
 @Injectable()
-export class WorkspaceInviteNotification {
+export class SendWorkspaceInviteUseCase {
   constructor(
     private readonly userSocket: AbstractUserSocketEmitter,
     private readonly userNotificationRepository: UserNotificationRepository,
   ) {}
 
-  async create({ invitingUserId, userId, workspaceId }: CreateArgsType) {
+  async execute({ invitingUserId, userId, workspaceId }: CreateArgsType) {
     const notification = await this.userNotificationRepository.create({
       type: 'workspace_invite',
       userId: userId,
@@ -31,5 +31,6 @@ export class WorkspaceInviteNotification {
       UserSocketEventsInput.Notification,
       notification.toObject(),
     );
+    return notification;
   }
 }
