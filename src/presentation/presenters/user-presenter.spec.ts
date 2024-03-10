@@ -30,4 +30,12 @@ describe('User presenter', () => {
     expect(data.createdAt).toBe(user.getCreatedAt());
     expect(data.updatedAt).toBe(user.getUpdatedAt());
   });
+
+  it('should present user to basic', () => {
+    const data = UserPresenter.toBasic(user);
+    expect(data.name).toBe(user.getName());
+    expect(data.lastName).toBe(user.getLastName());
+    expect(data.profilePicture).toBe(user.getProfilePicture());
+    expect(data.id).toBe(user.getId());
+  });
 });

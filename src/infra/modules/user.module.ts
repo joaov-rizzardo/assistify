@@ -5,12 +5,15 @@ import { BcryptPasswordEncrypter } from '../libs/bcrypt/bcrypt-password-encrypte
 import { PasswordEncrypter } from 'src/application/core/interfaces/cryptography/password-encrypter';
 import { AuthModule } from './auth.module';
 import { CreateUserController } from 'src/presentation/controllers/user/create-user-controller';
+import { GetUserUseCase } from 'src/application/use-cases/user/get-user-use-case';
+import { GetUserBasicInfoController } from 'src/presentation/controllers/workspace/get-user-basic-info-controller';
 
 @Module({
   imports: [PrismaModule, AuthModule],
-  controllers: [CreateUserController],
+  controllers: [CreateUserController, GetUserBasicInfoController],
   providers: [
     CreateUserUseCase,
+    GetUserUseCase,
     {
       provide: PasswordEncrypter,
       useClass: BcryptPasswordEncrypter,

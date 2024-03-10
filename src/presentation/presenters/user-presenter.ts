@@ -12,4 +12,13 @@ export class UserPresenter {
       updatedAt: user.getUpdatedAt(),
     };
   }
+
+  static toBasic(user: User) {
+    return {
+      id: user.getId(),
+      name: user.getName(),
+      lastName: user.getLastName(),
+      profilePicture: user.getProfilePicture(),
+    };
+  }
 }
