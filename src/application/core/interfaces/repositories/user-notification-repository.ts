@@ -23,4 +23,8 @@ export abstract class UserNotificationRepository {
   abstract find(
     args: FindNotificationArgs,
   ): UserNotification[] | Promise<UserNotification[]>;
+
+  abstract read(
+    notificationId: string,
+  ): null | UserNotification | Promise<UserNotification | null>;
 }

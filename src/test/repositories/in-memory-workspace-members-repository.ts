@@ -1,6 +1,7 @@
 import {
   WorkspaceMember,
   WorkspaceMemberRoles,
+  WorkspaceMemberStatus,
 } from 'src/application/core/entities/workspace-member';
 import {
   AddMemberProps,
@@ -50,7 +51,7 @@ export class InMemoryWorkspaceMembersRepository
   }
 
   async remove(userId: string, workspaceId: string): Promise<void> {
-    this.workspaceMembers.filter(
+    this.workspaceMembers = this.workspaceMembers.filter(
       (member) =>
         member.getUserId() !== userId &&
         member.getWorkspaceId() !== workspaceId,
@@ -85,5 +86,36 @@ export class InMemoryWorkspaceMembersRepository
           member.getWorkspaceId() === workspaceId,
       ) || null
     );
+  }
+
+  changeMemberStatus(
+    userId: string,
+    workspaceId: string,
+    status: WorkspaceMemberStatus,
+  ): WorkspaceMember | null {
+    const workspaceMember = this.workspaceMembers.find(
+      (member) =>
+        member.getUserId() === userId &&
+        member.getWorkspaceId() === workspaceId,
+    );
+    if (!workspaceMember) return null;
+    const updatedWorkspaceMember = new WorkspaceMember({
+      userId: workspaceMember.getUserId(),
+      role: workspaceMember.getRole(),
+      workspaceId: workspaceMember.getWorkspaceId(),
+      createdAt: workspaceMember.getCreatedAt(),
+      updatedAt: new Date(),
+      status: status,
+    });
+    this.workspaceMembers = this.workspaceMembers.map((member) => {
+      if (
+        member.getUserId() === userId &&
+        member.getWorkspaceId() === workspaceId
+      ) {
+        return updatedWorkspaceMember;
+      }
+      return member;
+    });
+    return updatedWorkspaceMember;
   }
 }

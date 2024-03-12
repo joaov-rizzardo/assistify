@@ -33,4 +33,20 @@ export class InMemoryUserNotificationRepository
       return true;
     });
   }
+
+  read(notificationId: string): null | UserNotification {
+    const notification = this.notifications.find(
+      (notification) => notification.getId() === notificationId,
+    );
+    if (!notification) return null;
+    const updatedNotification = new UserNotification({
+      ...notification.toObject(),
+      read: true,
+    });
+    this.notifications = this.notifications.map((n) => {
+      if (n.getId() === notificationId) return updatedNotification;
+      return n;
+    });
+    return updatedNotification;
+  }
 }

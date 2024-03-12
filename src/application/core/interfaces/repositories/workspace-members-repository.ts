@@ -24,4 +24,9 @@ export abstract class WorkspaceMembersRepository {
     workspaceId: string,
     role: WorkspaceMemberRoles,
   ): Promise<WorkspaceMember | null>;
+  abstract changeMemberStatus(
+    userId: string,
+    workspaceId: string,
+    status: WorkspaceMemberStatus,
+  ): null | WorkspaceMember | Promise<WorkspaceMember | null>;
 }
