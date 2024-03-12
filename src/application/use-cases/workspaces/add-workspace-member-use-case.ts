@@ -7,9 +7,12 @@ import { UserNotExistsError } from 'src/application/errors/user-not-exists-error
 import { CannotAddMemberAsOwnerError } from './errors/cannot-add-member-as-owner-error';
 import { WorkspaceMemberRoles } from './types/workspace-member-roles';
 import { SendWorkspaceInviteUseCase } from './send-workspace-invite-use-case';
+import { UserIsAlreadyWorkspaceMemberError } from './errors/user-is-already-workspace-member-error';
 
 export type AddWorkspaceMemberUseCaseResponse = Either<
-  UserNotExistsError | CannotAddMemberAsOwnerError,
+  | UserNotExistsError
+  | CannotAddMemberAsOwnerError
+  | UserIsAlreadyWorkspaceMemberError,
   WorkspaceMember
 >;
 
@@ -36,12 +39,23 @@ export class AddWorkspaceMemberUseCase {
     if (!(await this.userRepository.checkIfUserExistsById(userId))) {
       return left(new UserNotExistsError(userId));
     }
-    const member = await this.workspaceMembersRepository.add({
-      workspaceId,
-      role,
-      userId,
-      status: 'invited',
-    });
+    let member: WorkspaceMember =
+      await this.workspaceMembersRepository.findWorkspaceMember(
+        workspaceId,
+        userId,
+      );
+    const isAlreadyMember = member && member.getStatus() === 'accepted';
+    if (isAlreadyMember) {
+      return left(new UserIsAlreadyWorkspaceMemberError(userId, workspaceId));
+    }
+    if (!member) {
+      member = await this.workspaceMembersRepository.add({
+        workspaceId,
+        role,
+        userId,
+        status: 'invited',
+      });
+    }
     await this.sendWorkspaceInviteUseCase.execute({
       invitingUserId: invitingUserId,
       userId,

@@ -118,4 +118,12 @@ export class InMemoryWorkspaceMembersRepository
     });
     return updatedWorkspaceMember;
   }
+
+  checkIfMemberExists(workspaceId: string, userId: string): boolean {
+    return this.workspaceMembers.some(
+      (member) =>
+        member.getUserId() === userId &&
+        member.getWorkspaceId() === workspaceId,
+    );
+  }
 }

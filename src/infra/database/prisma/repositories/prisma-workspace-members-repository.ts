@@ -1,6 +1,7 @@
 import {
   WorkspaceMember,
   WorkspaceMemberRoles,
+  WorkspaceMemberStatus,
 } from 'src/application/core/entities/workspace-member';
 import {
   AddMemberProps,
@@ -8,13 +9,20 @@ import {
 } from 'src/application/core/interfaces/repositories/workspace-members-repository';
 import { PrismaProvider } from '../prisma-provider';
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+
+type PrismaWorkspaceMember = Prisma.WorkspaceMemberGetPayload<{
+  include: {
+    user: false;
+    workspace: false;
+  };
+}>;
 
 @Injectable()
 export class PrismaWorkspaceMembersRepository
   implements WorkspaceMembersRepository
 {
   constructor(private readonly prisma: PrismaProvider) {}
-
   async add({
     userId,
     role,
@@ -29,14 +37,7 @@ export class PrismaWorkspaceMembersRepository
         workspace_id: workspaceId,
       },
     });
-    return new WorkspaceMember({
-      userId: member.user_id,
-      workspaceId: member.workspace_id,
-      role: member.role,
-      status: member.status,
-      createdAt: member.created_at,
-      updatedAt: member.updated_at,
-    });
+    return this.instanceWithPrismaResponse(member);
   }
 
   async findWorkspaceMember(
@@ -49,33 +50,14 @@ export class PrismaWorkspaceMembersRepository
         user_id: userId,
       },
     });
-    return member
-      ? new WorkspaceMember({
-          userId: member.user_id,
-          workspaceId: member.workspace_id,
-          role: member.role,
-          status: member.status,
-          createdAt: member.created_at,
-          updatedAt: member.updated_at,
-        })
-      : null;
+    return member ? this.instanceWithPrismaResponse(member) : null;
   }
 
   async findUserWorkspaces(userId: string): Promise<WorkspaceMember[]> {
     const members = await this.prisma.client.workspaceMember.findMany({
       where: { user_id: userId, status: 'accepted' },
     });
-    return members.map(
-      (member) =>
-        new WorkspaceMember({
-          userId: member.user_id,
-          workspaceId: member.workspace_id,
-          role: member.role,
-          status: member.status,
-          createdAt: member.created_at,
-          updatedAt: member.updated_at,
-        }),
-    );
+    return members.map((member) => this.instanceWithPrismaResponse(member));
   }
 
   async remove(userId: string, workspaceId: string): Promise<void> {
@@ -113,13 +95,49 @@ export class PrismaWorkspaceMembersRepository
         },
       },
     });
+    return this.instanceWithPrismaResponse(updatedMember);
+  }
+
+  async checkIfMemberExists(
+    workspaceId: string,
+    userId: string,
+  ): Promise<boolean> {
+    const quantity = await this.prisma.client.workspaceMember.count({
+      where: {
+        workspace_id: workspaceId,
+        user_id: userId,
+      },
+    });
+    return quantity > 0;
+  }
+  async changeMemberStatus(
+    userId: string,
+    workspaceId: string,
+    status: WorkspaceMemberStatus,
+  ): Promise<WorkspaceMember | null> {
+    const member = await this.prisma.client.workspaceMember.update({
+      data: {
+        status,
+      },
+      where: {
+        user_id_workspace_id: {
+          user_id: userId,
+          workspace_id: workspaceId,
+        },
+      },
+    });
+    if (!member) return null;
+    return this.instanceWithPrismaResponse(member);
+  }
+
+  private instanceWithPrismaResponse(member: PrismaWorkspaceMember) {
     return new WorkspaceMember({
-      userId: updatedMember.user_id,
-      workspaceId: updatedMember.workspace_id,
-      role: updatedMember.role,
-      status: updatedMember.status,
-      createdAt: updatedMember.created_at,
-      updatedAt: updatedMember.updated_at,
+      userId: member.user_id,
+      workspaceId: member.workspace_id,
+      role: member.role,
+      status: member.status,
+      createdAt: member.created_at,
+      updatedAt: member.updated_at,
     });
   }
 }

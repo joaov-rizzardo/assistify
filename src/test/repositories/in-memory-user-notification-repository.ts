@@ -2,6 +2,7 @@ import { UserNotification } from 'src/application/core/entities/user-notificatio
 import {
   CreateUserNotificationArgs,
   FindNotificationArgs,
+  UpdateUserNotificationArgs,
   UserNotificationRepository,
 } from 'src/application/core/interfaces/repositories/user-notification-repository';
 import { v4 as uuid } from 'uuid';
@@ -42,6 +43,38 @@ export class InMemoryUserNotificationRepository
     const updatedNotification = new UserNotification({
       ...notification.toObject(),
       read: true,
+    });
+    this.notifications = this.notifications.map((n) => {
+      if (n.getId() === notificationId) return updatedNotification;
+      return n;
+    });
+    return updatedNotification;
+  }
+
+  findWorkspaceInvite(
+    userId: string,
+    workspaceId: string,
+  ): UserNotification | null {
+    return this.notifications.find((notification) => {
+      if (notification.getUserId() !== userId) return false;
+      if (notification.getType() !== 'workspace_invite') return false;
+      if (notification.getContent().workspaceId !== workspaceId) return false;
+      return true;
+    });
+  }
+
+  update(
+    notificationId: string,
+    args: UpdateUserNotificationArgs,
+  ): UserNotification | null {
+    const notification = this.notifications.find(
+      (notification) => notification.getId() === notificationId,
+    );
+    if (!notification) return null;
+    const updatedNotification = new UserNotification({
+      ...notification.toObject(),
+      date: args.date || notification.getDate(),
+      content: args.content || notification.getContent(),
     });
     this.notifications = this.notifications.map((n) => {
       if (n.getId() === notificationId) return updatedNotification;

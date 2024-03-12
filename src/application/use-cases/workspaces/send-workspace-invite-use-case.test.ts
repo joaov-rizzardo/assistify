@@ -16,7 +16,7 @@ describe('Remove workspace member use case', () => {
     sut = new SendWorkspaceInviteUseCase(socket, userNotificationRepository);
   });
 
-  it('it should create create workspace invite', async () => {
+  it('should create create workspace invite', async () => {
     const userId = uuid();
     const workspaceId = uuid();
     const invitingUserId = uuid();
@@ -28,7 +28,7 @@ describe('Remove workspace member use case', () => {
     expect(notification).toBeTruthy();
   });
 
-  it('it should emit event on user socket', async () => {
+  it('should emit event on user socket', async () => {
     const userId = uuid();
     const workspaceId = uuid();
     const invitingUserId = uuid();
@@ -38,5 +38,29 @@ describe('Remove workspace member use case', () => {
       workspaceId,
     });
     expect(socket.sendToUser).toHaveBeenCalled();
+  });
+
+  it("should resend user's notification when is already created", async () => {
+    const userId = uuid();
+    const workspaceId = uuid();
+    const invitingUserId = uuid();
+    const notification = await userNotificationRepository.create({
+      type: 'workspace_invite',
+      userId: userId,
+      content: {
+        type: 'workspace_invite',
+        invitingUserId: invitingUserId,
+        workspaceId: workspaceId,
+      },
+    });
+    const updatedNotification = await sut.execute({
+      invitingUserId,
+      userId,
+      workspaceId,
+    });
+    expect(updatedNotification.getId()).toBe(notification.getId);
+    expect(updatedNotification.getDate().getTime()).toBeGreaterThan(
+      notification.getDate().getTime(),
+    );
   });
 });

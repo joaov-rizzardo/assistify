@@ -17,6 +17,7 @@ import { InMemoryUserNotificationRepository } from 'src/test/repositories/in-mem
 import { AbstractUserSocketEmitter } from 'src/application/core/interfaces/socket/abstract-user-socket-emitter';
 import { FakeUserSocketEmitter } from 'src/test/socket/fake-user-socket-emitter';
 import { SendWorkspaceInviteUseCase } from './send-workspace-invite-use-case';
+import { UserIsAlreadyWorkspaceMemberError } from './errors/user-is-already-workspace-member-error';
 
 describe('Add workspace member use case', () => {
   let userRepository: UserRepository;
@@ -144,5 +145,31 @@ describe('Add workspace member use case', () => {
     ).notifications[0];
     expect(notification).toBeTruthy();
     expect(notification.getUserId()).toBe(memberUser.getId());
+  });
+
+  it("shouldn't add member if user is already a member", async () => {
+    const userData = makeUser();
+    const memberUser = await userRepository.create({
+      name: userData.name,
+      lastName: userData.lastName,
+      email: userData.email,
+      password: userData.password,
+    });
+    await workspaceMembersRepository.add({
+      userId: memberUser.getId(),
+      workspaceId: workspace.getId(),
+      role: 'admin',
+      status: 'accepted',
+    });
+    const result = await sut.execute(workspace.getId(), {
+      role: 'admin',
+      userId: memberUser.getId(),
+      invitingUserId: uuid(),
+    });
+    expect(result.isLeft()).toBe(true);
+    if (result.isLeft()) {
+      const error = result.value;
+      expect(error).toBeInstanceOf(UserIsAlreadyWorkspaceMemberError);
+    }
   });
 });

@@ -17,6 +17,10 @@ export abstract class WorkspaceMembersRepository {
     workspaceId: string,
     userId: string,
   ): Promise<WorkspaceMember | null>;
+  abstract checkIfMemberExists(
+    workspaceId: string,
+    userId: string,
+  ): Promise<boolean> | boolean;
   abstract findUserWorkspaces(userId: string): Promise<WorkspaceMember[]>;
   abstract remove(userId: string, workspaceId: string): Promise<void>;
   abstract changeMemberRole(

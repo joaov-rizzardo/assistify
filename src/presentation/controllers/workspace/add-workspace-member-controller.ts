@@ -16,6 +16,7 @@ import { WorkspaceMemberPresenter } from '../../presenters/workspace-member-pres
 import { UserNotExistsError } from 'src/application/errors/user-not-exists-error';
 import { CannotAddMemberAsOwnerError } from 'src/application/use-cases/workspaces/errors/cannot-add-member-as-owner-error';
 import { AddWorkspaceMemberDTO } from 'src/application/core/dtos/workspace/add-workspace-member-dto';
+import { UserIsAlreadyWorkspaceMemberError } from 'src/application/use-cases/workspaces/errors/user-is-already-workspace-member-error';
 
 @Controller('workspaces/member')
 export class AddWorkspaceMemberController {
@@ -48,6 +49,12 @@ export class AddWorkspaceMemberController {
         throw new BadRequestException({
           message: 'Cannot add member as a owner',
           code: 'CANNOT_ADD_OWNER',
+        });
+      }
+      if (error instanceof UserIsAlreadyWorkspaceMemberError) {
+        throw new BadRequestException({
+          message: 'User is already workspace member',
+          code: 'USER_IS_ALREADY_MEMBER',
         });
       }
     }

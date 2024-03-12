@@ -2,6 +2,7 @@ import { UserNotification } from 'src/application/core/entities/user-notificatio
 import {
   CreateUserNotificationArgs,
   FindNotificationArgs,
+  UpdateUserNotificationArgs,
   UserNotificationRepository,
 } from 'src/application/core/interfaces/repositories/user-notification-repository';
 import { PrismaProvider } from '../prisma-provider';
@@ -46,6 +47,52 @@ export class PrismaUserNotificationRepository
     return notifications.map((notification) =>
       this.instanceUserNotificationByReturnQuery(notification),
     );
+  }
+
+  async findWorkspaceInvite(
+    userId: string,
+    workspaceId: string,
+  ): Promise<UserNotification | null> {
+    const notification = await this.prisma.client.userNotifications.findFirst({
+      where: {
+        user_id: userId,
+        type: 'workspace_invite',
+        content: {
+          equals: {
+            workspaceId,
+          },
+        },
+      },
+    });
+    if (!notification) return null;
+    return this.instanceUserNotificationByReturnQuery(notification);
+  }
+  async read(notificationId: string): Promise<UserNotification | null> {
+    const notification = await this.prisma.client.userNotifications.update({
+      data: {
+        read: true,
+      },
+      where: {
+        id: notificationId,
+      },
+    });
+    if (!notification) return null;
+    return this.instanceUserNotificationByReturnQuery(notification);
+  }
+  async update(
+    notificationId: string,
+    args: UpdateUserNotificationArgs,
+  ): Promise<UserNotification | null> {
+    const notification = await this.prisma.client.userNotifications.update({
+      data: {
+        ...args,
+      },
+      where: {
+        id: notificationId,
+      },
+    });
+    if (!notification) return null;
+    return this.instanceUserNotificationByReturnQuery(notification);
   }
 
   private instanceUserNotificationByReturnQuery(

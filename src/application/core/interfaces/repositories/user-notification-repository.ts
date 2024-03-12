@@ -15,6 +15,11 @@ export type FindNotificationArgs = {
   type?: UserNotificationTypes;
 };
 
+export type UpdateUserNotificationArgs = {
+  date?: Date;
+  content?: UserNotificationContentType;
+};
+
 export abstract class UserNotificationRepository {
   abstract create(
     args: CreateUserNotificationArgs,
@@ -24,7 +29,17 @@ export abstract class UserNotificationRepository {
     args: FindNotificationArgs,
   ): UserNotification[] | Promise<UserNotification[]>;
 
+  abstract findWorkspaceInvite(
+    userId: string,
+    workspaceId: string,
+  ): UserNotification | null | Promise<UserNotification | null>;
+
   abstract read(
     notificationId: string,
+  ): null | UserNotification | Promise<UserNotification | null>;
+
+  abstract update(
+    notificationId: string,
+    args: UpdateUserNotificationArgs,
   ): null | UserNotification | Promise<UserNotification | null>;
 }

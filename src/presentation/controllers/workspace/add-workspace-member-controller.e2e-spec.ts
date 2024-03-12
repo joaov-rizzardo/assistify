@@ -147,4 +147,24 @@ describe('Add workspace member (E2E)', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body.code).toBe('USER_NOT_EXISTS');
   });
+
+  test('[POST] /workspaces/member/add it should verify if user is already a member', async () => {
+    const userMember = await userFactory.makePrismaUser();
+    await workspaceMembersRepository.add({
+      userId: userMember.getId(),
+      workspaceId: workspace.getId(),
+      role: 'admin',
+      status: 'accepted',
+    });
+    const response = await request(app.getHttpServer())
+      .post('/workspaces/member/add')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .set('x-workspace', workspace.getId())
+      .send({
+        userId: userMember.getId(),
+        role: 'admin',
+      });
+    expect(response.statusCode).toBe(400);
+    expect(response.body.code).toBe('USER_IS_ALREADY_MEMBER');
+  });
 });

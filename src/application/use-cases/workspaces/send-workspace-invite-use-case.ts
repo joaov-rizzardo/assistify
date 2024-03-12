@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { UserNotification } from 'src/application/core/entities/user-notification';
 import { UserNotificationRepository } from 'src/application/core/interfaces/repositories/user-notification-repository';
 import { AbstractUserSocketEmitter } from 'src/application/core/interfaces/socket/abstract-user-socket-emitter';
 import { UserSocketEventsInput } from 'src/presentation/socket/events/user-socket-events';
@@ -17,15 +18,30 @@ export class SendWorkspaceInviteUseCase {
   ) {}
 
   async execute({ invitingUserId, userId, workspaceId }: CreateArgsType) {
-    const notification = await this.userNotificationRepository.create({
-      type: 'workspace_invite',
-      userId: userId,
-      content: {
-        type: 'workspace_invite',
-        invitingUserId,
+    let notification: UserNotification | null =
+      await this.userNotificationRepository.findWorkspaceInvite(
+        userId,
         workspaceId,
-      },
-    });
+      );
+    if (notification) {
+      notification = await this.userNotificationRepository.update(
+        notification.getId(),
+        {
+          date: new Date(),
+        },
+      );
+    }
+    if (!notification) {
+      notification = await this.userNotificationRepository.create({
+        type: 'workspace_invite',
+        userId: userId,
+        content: {
+          type: 'workspace_invite',
+          invitingUserId,
+          workspaceId,
+        },
+      });
+    }
     this.userSocket.sendToUser(
       userId,
       UserSocketEventsInput.Notification,
