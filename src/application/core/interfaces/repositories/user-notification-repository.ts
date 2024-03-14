@@ -46,4 +46,8 @@ export abstract class UserNotificationRepository {
     notificationId: string,
     args: UpdateUserNotificationArgs,
   ): null | UserNotification | Promise<UserNotification | null>;
+
+  abstract findUserUnreadNotifications(
+    userId: string,
+  ): Promise<UserNotification[]> | UserNotification[];
 }

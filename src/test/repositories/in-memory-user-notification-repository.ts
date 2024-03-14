@@ -90,4 +90,11 @@ export class InMemoryUserNotificationRepository
     });
     return updatedNotification;
   }
+
+  findUserUnreadNotifications(userId: string): UserNotification[] {
+    return this.notifications.filter(
+      (notification) =>
+        notification.getUserId() === userId && !notification.getRead(),
+    );
+  }
 }

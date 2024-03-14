@@ -105,6 +105,20 @@ export class PrismaUserNotificationRepository
     return this.instanceUserNotificationByReturnQuery(notification);
   }
 
+  async findUserUnreadNotifications(
+    userId: string,
+  ): Promise<UserNotification[]> {
+    const notifications = await this.prisma.client.userNotifications.findMany({
+      where: {
+        user_id: userId,
+        read: false,
+      },
+    });
+    return notifications.map((notification) =>
+      this.instanceUserNotificationByReturnQuery(notification),
+    );
+  }
+
   private instanceUserNotificationByReturnQuery(
     notification: PrismaNotification,
   ) {
