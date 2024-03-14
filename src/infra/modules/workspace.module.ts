@@ -18,6 +18,9 @@ import { SocketModule } from './socket.module';
 import { GetWorkspaceBasicInfoController } from 'src/presentation/controllers/workspace/get-workspace-basic-info-controller';
 import { GetWorkspaceUseCase } from 'src/application/use-cases/workspaces/get-workspace-use-case';
 import { SendWorkspaceInviteUseCase } from 'src/application/use-cases/workspaces/send-workspace-invite-use-case';
+import { RespondWorkspaceInviteUseCase } from 'src/application/use-cases/workspaces/respond-workspace-invite-use-case';
+import { AcceptWorkspaceInviteController } from 'src/presentation/controllers/workspace/accept-workspace-invite-controller';
+import { RejectWorkspaceInviteController } from 'src/presentation/controllers/workspace/reject-workspace-invite-controller';
 
 @Module({
   imports: [PrismaModule, SocketModule, AuthModule],
@@ -29,6 +32,8 @@ import { SendWorkspaceInviteUseCase } from 'src/application/use-cases/workspaces
     RemoveWorkspaceMemberController,
     ChangeWorkspaceMemberRoleController,
     GetWorkspaceBasicInfoController,
+    AcceptWorkspaceInviteController,
+    RejectWorkspaceInviteController,
   ],
   providers: [
     CreateWorkspaceUseCase,
@@ -40,6 +45,7 @@ import { SendWorkspaceInviteUseCase } from 'src/application/use-cases/workspaces
     ChangeWorkspaceMemberRoleUseCase,
     SendWorkspaceInviteUseCase,
     GetWorkspaceUseCase,
+    RespondWorkspaceInviteUseCase,
   ],
 })
 export class WorkspaceModule {}

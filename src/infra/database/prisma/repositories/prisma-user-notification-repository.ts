@@ -49,6 +49,16 @@ export class PrismaUserNotificationRepository
     );
   }
 
+  async findById(notificationId: string): Promise<UserNotification | null> {
+    const notification = await this.prisma.client.userNotifications.findUnique({
+      where: {
+        id: notificationId,
+      },
+    });
+    if (!notification) return null;
+    return this.instanceUserNotificationByReturnQuery(notification);
+  }
+
   async findWorkspaceInvite(
     userId: string,
     workspaceId: string,

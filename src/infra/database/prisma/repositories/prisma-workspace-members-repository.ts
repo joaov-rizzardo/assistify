@@ -61,10 +61,12 @@ export class PrismaWorkspaceMembersRepository
   }
 
   async remove(userId: string, workspaceId: string): Promise<void> {
-    await this.prisma.client.workspaceMember.deleteMany({
+    await this.prisma.client.workspaceMember.delete({
       where: {
-        user_id: userId,
-        workspace_id: workspaceId,
+        user_id_workspace_id: {
+          user_id: userId,
+          workspace_id: workspaceId,
+        },
       },
     });
   }

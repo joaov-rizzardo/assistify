@@ -35,6 +35,14 @@ export class InMemoryUserNotificationRepository
     });
   }
 
+  findById(notificationId: string): UserNotification | null {
+    return (
+      this.notifications.find(
+        (notification) => notification.getId() === notificationId,
+      ) || null
+    );
+  }
+
   read(notificationId: string): null | UserNotification {
     const notification = this.notifications.find(
       (notification) => notification.getId() === notificationId,

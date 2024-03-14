@@ -29,6 +29,10 @@ export abstract class UserNotificationRepository {
     args: FindNotificationArgs,
   ): UserNotification[] | Promise<UserNotification[]>;
 
+  abstract findById(
+    notificationId: string,
+  ): UserNotification | null | Promise<UserNotification | null>;
+
   abstract findWorkspaceInvite(
     userId: string,
     workspaceId: string,
