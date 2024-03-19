@@ -7,6 +7,12 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ChangeWorkspaceMemberRoleDTO } from 'src/application/core/dtos/workspace/change-workspace-member-role-dto';
 import { ChangeWorkspaceMemberRoleUseCase } from 'src/application/use-cases/workspaces/change-workspace-member-role-use-case';
 import { CannotChangeMemberRoleToOwnerError } from 'src/application/use-cases/workspaces/errors/cannot-change-member-role-to-owner-error';
@@ -18,12 +24,31 @@ import {
 } from 'src/infra/guards/workspace-authentication.guard';
 import { WorkspaceMemberPresenter } from 'src/presentation/presenters/workspace-member-presenter';
 
+@ApiTags('Workspaces')
 @Controller('workspaces/member')
 export class ChangeWorkspaceMemberRoleController {
   constructor(
     private readonly changeWorkspaceMemberRoleUseCase: ChangeWorkspaceMemberRoleUseCase,
   ) {}
 
+  @ApiBearerAuth()
+  @ApiHeader({
+    name: 'x-workspace',
+    description: 'Workspace ID',
+    required: true,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Response when workspace member role was changed successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request error',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'User is not authorized to access this resource',
+  })
   @Roles(['owner', 'admin'])
   @UseGuards(WorkspaceAuthenticationGuard)
   @Patch('/change-role/:userId')

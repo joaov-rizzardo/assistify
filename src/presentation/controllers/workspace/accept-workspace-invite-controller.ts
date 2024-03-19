@@ -8,6 +8,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserNotificationRepository } from 'src/application/core/interfaces/repositories/user-notification-repository';
 import { NotificationIsNotWorkspaceInviteError } from 'src/application/use-cases/workspaces/errors/notification-is-not-workspace-invite-error';
 import { WorkspaceInviteIsAlreadyAcceptedError } from 'src/application/use-cases/workspaces/errors/workspace-invite-is-already-accepted-error';
@@ -18,6 +19,7 @@ import {
   UserRequest,
 } from 'src/infra/guards/user-authentication.guard';
 
+@ApiTags('Workspaces')
 @Controller('workspaces')
 export class AcceptWorkspaceInviteController {
   constructor(
@@ -25,6 +27,23 @@ export class AcceptWorkspaceInviteController {
     private readonly userNotificationRepository: UserNotificationRepository,
   ) {}
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Response when workspace invite was accepted successfully',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Workspace invite not found',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'User not authorized to access this resource',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request error',
+  })
   @UseGuards(UserAuthenticationGuard)
   @Patch(':notificationId/accept')
   async handle(

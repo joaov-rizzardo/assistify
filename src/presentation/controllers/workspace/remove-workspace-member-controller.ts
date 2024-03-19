@@ -6,6 +6,12 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CannotRemoveOwnerFromWorkspaceError } from 'src/application/use-cases/workspaces/errors/cannot-remove-owner-from-workspace-error';
 import { UserIsNotMemberFromWorkspaceError } from 'src/application/use-cases/workspaces/errors/user-is-not-member-from-workspace-error';
 import { RemoveWorkspaceMemberUseCase } from 'src/application/use-cases/workspaces/remove-workspace-member-use-case';
@@ -15,13 +21,32 @@ import {
   WorkspaceRequest,
 } from 'src/infra/guards/workspace-authentication.guard';
 
+@ApiTags('Workspaces')
 @Controller('workspaces/member')
 export class RemoveWorkspaceMemberController {
   constructor(
     private readonly removeWorkspaceMemberUseCase: RemoveWorkspaceMemberUseCase,
   ) {}
 
+  @ApiHeader({
+    name: 'x-workspace',
+    description: 'Workspace ID',
+    required: true,
+  })
+  @ApiBearerAuth()
   @Roles(['owner', 'admin'])
+  @ApiResponse({
+    status: 200,
+    description: 'Response when workspace member was removed successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request error',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'User is not authorized to access this resource',
+  })
   @UseGuards(WorkspaceAuthenticationGuard)
   @Delete('/remove/:userId')
   async remove(

@@ -17,13 +17,38 @@ import { UserNotExistsError } from 'src/application/errors/user-not-exists-error
 import { CannotAddMemberAsOwnerError } from 'src/application/use-cases/workspaces/errors/cannot-add-member-as-owner-error';
 import { AddWorkspaceMemberDTO } from 'src/application/core/dtos/workspace/add-workspace-member-dto';
 import { UserIsAlreadyWorkspaceMemberError } from 'src/application/use-cases/workspaces/errors/user-is-already-workspace-member-error';
+import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Workspaces')
 @Controller('workspaces/member')
 export class AddWorkspaceMemberController {
   constructor(
     private readonly addWorkspacemMemberUseCase: AddWorkspaceMemberUseCase,
   ) {}
 
+  @ApiBearerAuth()
+  @ApiHeader({
+    name: 'x-workspace',
+    description: 'Workspace ID',
+    required: true,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Response when workspace member was added successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request error',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'User is not authorized to access this resource',
+  })
   @Roles(['owner', 'admin'])
   @UseGuards(WorkspaceAuthenticationGuard)
   @Post('/add')
