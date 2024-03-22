@@ -14,6 +14,8 @@ import { PrismaTransactionOperation } from './prisma-transaction-operation';
 import { RunTransactionOperation } from 'src/application/core/interfaces/database/run-transaction-operation';
 import { UserNotificationRepository } from 'src/application/core/interfaces/repositories/user-notification-repository';
 import { PrismaUserNotificationRepository } from './repositories/prisma-user-notification-repository';
+import { FileStorageRepository } from 'src/application/core/interfaces/repositories/file-storage-repository';
+import { PrismaFileStorageRepository } from './repositories/prisma-file-storage-repository';
 
 @Module({
   imports: [],
@@ -47,6 +49,10 @@ import { PrismaUserNotificationRepository } from './repositories/prisma-user-not
       provide: UserNotificationRepository,
       useClass: PrismaUserNotificationRepository,
     },
+    {
+      provide: FileStorageRepository,
+      useClass: PrismaFileStorageRepository,
+    },
   ],
   exports: [
     PrismaProvider,
@@ -57,6 +63,7 @@ import { PrismaUserNotificationRepository } from './repositories/prisma-user-not
     WorkspaceMembersRepository,
     RunTransactionOperation,
     UserNotificationRepository,
+    FileStorageRepository,
   ],
 })
 export class PrismaModule {

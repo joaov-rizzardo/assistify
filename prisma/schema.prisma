@@ -128,3 +128,13 @@ enum HttpLogLevel {
   error
   info
 }
+
+model FileStorage {
+  id            String    @id
+  filename      String
+  original_name String
+  mimetype      String
+  expiration    DateTime?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}

@@ -12,6 +12,7 @@ import { WorkspaceModule } from './infra/modules/workspace.module';
 import { ClsModule } from 'nestjs-cls';
 import { SocketModule } from './infra/modules/socket.module';
 import { NotificationModule } from './infra/modules/notification.module';
+import { StorageModule } from './infra/modules/storage.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { NotificationModule } from './infra/modules/notification.module';
     WorkspaceModule,
     NotificationModule,
     AuthenticationModule,
+    StorageModule,
   ],
   providers: [
     {
