@@ -2,6 +2,7 @@ import {
   Controller,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -13,6 +14,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { FileStorage } from 'src/application/core/interfaces/storage/file-storage';
+import { UserAuthenticationGuard } from 'src/infra/guards/user-authentication.guard';
 
 @ApiTags('Storage')
 @Controller('storage')
@@ -21,11 +23,11 @@ export class UploadFileController {
 
   @Post('upload')
   @ApiConsumes('multipart/form-data')
+  @UseGuards(UserAuthenticationGuard)
   @ApiBearerAuth()
   @UseInterceptors(FileInterceptor('file'))
   @ApiBody({
-    required: true,
-    type: 'multipart/form-data',
+    description: 'Arquivo a ser enviado',
     schema: {
       type: 'object',
       properties: {
