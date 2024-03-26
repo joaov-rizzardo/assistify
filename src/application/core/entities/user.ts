@@ -61,4 +61,16 @@ export class User {
   public getUpdatedAt() {
     return this.updatedAt;
   }
+
+  public toObject() {
+    return {
+      id: this.getId(),
+      name: this.getName(),
+      lastName: this.getLastName(),
+      email: this.getEmail(),
+      profilePicture: this.getProfilePicture(),
+      createdAt: this.getCreatedAt(),
+      updatedAt: this.getUpdatedAt(),
+    };
+  }
 }

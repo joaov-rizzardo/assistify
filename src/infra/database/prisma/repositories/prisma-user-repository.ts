@@ -67,6 +67,19 @@ export class PrismaUserRepository implements UserRepository {
     return this.instanceUserEntityByResponse(user);
   }
 
+  async changePassword(userId: string, password: string): Promise<User | null> {
+    const result = await this.prisma.client.users.update({
+      data: {
+        password,
+      },
+      where: {
+        id: userId,
+      },
+    });
+    if (!result) return null;
+    return this.instanceUserEntityByResponse(result);
+  }
+
   private instanceUserEntityByResponse(user: PrismaUser) {
     return new User({
       id: user.id,

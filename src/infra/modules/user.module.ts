@@ -7,13 +7,20 @@ import { AuthModule } from './auth.module';
 import { CreateUserController } from 'src/presentation/controllers/user/create-user-controller';
 import { GetUserUseCase } from 'src/application/use-cases/user/get-user-use-case';
 import { GetUserBasicInfoController } from 'src/presentation/controllers/user/get-user-basic-info-controller';
+import { ChangeUserPasswordController } from 'src/presentation/controllers/user/change-user-password-controller';
+import { ChangeUserPasswordUseCase } from 'src/application/use-cases/user/change-user-password-use-case';
 
 @Module({
   imports: [PrismaModule, AuthModule],
-  controllers: [CreateUserController, GetUserBasicInfoController],
+  controllers: [
+    CreateUserController,
+    GetUserBasicInfoController,
+    ChangeUserPasswordController,
+  ],
   providers: [
     CreateUserUseCase,
     GetUserUseCase,
+    ChangeUserPasswordUseCase,
     {
       provide: PasswordEncrypter,
       useClass: BcryptPasswordEncrypter,

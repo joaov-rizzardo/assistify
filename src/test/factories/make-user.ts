@@ -25,7 +25,6 @@ export class UserFactory {
 
   async makePrismaUser(args?: MakeUserType) {
     const { name, email, lastName, password } = args || makeUser();
-
     const createdUser = await this.prisma.client.users.create({
       data: {
         name: name,

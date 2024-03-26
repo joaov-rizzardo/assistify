@@ -43,4 +43,16 @@ export class InMemoryUserRepository implements UserRepository {
     const user = this.users.find((user) => user.getEmail() === email);
     return user || null;
   }
+
+  changePassword(userId: string, password: string): User | null {
+    this.users = this.users.map((user) =>
+      user.getId() === userId
+        ? new User({
+            ...user.toObject(),
+            password,
+          })
+        : user,
+    );
+    return this.users.find((user) => user.getId() === userId) || null;
+  }
 }
