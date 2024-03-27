@@ -62,13 +62,13 @@ export class RemoveWorkspaceMemberController {
       const error = result.value;
       if (error instanceof CannotRemoveOwnerFromWorkspaceError) {
         throw new BadRequestException({
-          message: 'Cannot remove owner from workspace',
+          message: error.message,
           code: 'CANNOT_REMOVE_OWNER',
         });
       }
       if (error instanceof UserIsNotMemberFromWorkspaceError) {
         throw new BadRequestException({
-          message: "User isn't a workspace member",
+          message: error.message,
           code: 'USER_IS_NOT_WORKSPACE_MEMBER',
         });
       }

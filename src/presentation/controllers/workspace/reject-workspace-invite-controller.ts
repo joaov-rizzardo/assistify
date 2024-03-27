@@ -72,19 +72,19 @@ export class RejectWorkspaceInviteController {
       const error = result.value;
       if (error instanceof NotificationIsNotWorkspaceInviteError) {
         throw new BadRequestException({
-          message: `Notification ${notificationId} is not a workspace invite`,
+          message: error.message,
           code: 'NOTIFICATION_IS_NOT_WORKSPACE_INVITE',
         });
       }
       if (error instanceof WorkspaceInviteIsNotValidError) {
         throw new BadRequestException({
-          message: `Workspace invite ${notificationId} is not valid`,
+          message: error.message,
           code: 'WORKSPACE_INVITE_IS_NOT_VALID',
         });
       }
       if (error instanceof WorkspaceInviteIsAlreadyAcceptedError) {
         throw new BadRequestException({
-          message: `Workspace invite ${notificationId} is already accepted`,
+          message: error.message,
           code: 'WORKSPACE_INVITE_IS_ALREADY_ACCEPTED',
         });
       }

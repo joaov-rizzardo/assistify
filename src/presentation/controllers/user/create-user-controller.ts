@@ -23,7 +23,8 @@ export class CreateUserController {
       password,
     });
     if (result.isLeft()) {
-      throw new ConflictException();
+      const error = result.value;
+      throw new ConflictException(error.message);
     }
     const user = result.value;
     return UserPresenter.toHTTP(user);

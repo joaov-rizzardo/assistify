@@ -55,7 +55,8 @@ export class UpdateWorkspaceController {
       args,
     );
     if (result.isLeft()) {
-      throw new NotFoundException('Workspace not found');
+      const error = result.value;
+      throw new NotFoundException(error.message);
     }
     const updatedWorkspace = result.value;
     return WorkspacePresenter.toHTTP(updatedWorkspace);

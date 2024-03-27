@@ -26,8 +26,9 @@ export class AuthenticateUserController {
       password,
     });
     if (result.isLeft()) {
+      const error = result.value;
       throw new BadRequestException({
-        message: 'Email or password is invalid',
+        message: error.message,
         code: 'BAD_CREDENTIALS',
       });
     }

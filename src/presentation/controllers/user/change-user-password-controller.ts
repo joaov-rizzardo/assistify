@@ -44,13 +44,13 @@ export class ChangeUserPasswordController {
       if (error instanceof UserNotExistsError) {
         throw new NotFoundException({
           code: 'USER_NOT_EXISTS',
-          message: 'User not exists',
+          message: error.message,
         });
       }
       if (error instanceof IncorrectUserPasswordError) {
         throw new BadRequestException({
           code: 'INCORRECT_USER_PASSWORD',
-          message: 'Incorrect current password',
+          message: error.message,
         });
       }
       throw new Error(result.value.message);

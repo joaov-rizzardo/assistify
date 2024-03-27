@@ -66,19 +66,19 @@ export class AddWorkspaceMemberController {
       const error = result.value;
       if (error instanceof UserNotExistsError) {
         throw new BadRequestException({
-          message: 'User not exists',
+          message: error.message,
           code: 'USER_NOT_EXISTS',
         });
       }
       if (error instanceof CannotAddMemberAsOwnerError) {
         throw new BadRequestException({
-          message: 'Cannot add member as a owner',
+          message: error.message,
           code: 'CANNOT_ADD_OWNER',
         });
       }
       if (error instanceof UserIsAlreadyWorkspaceMemberError) {
         throw new BadRequestException({
-          message: 'User is already workspace member',
+          message: error.message,
           code: 'USER_IS_ALREADY_MEMBER',
         });
       }
