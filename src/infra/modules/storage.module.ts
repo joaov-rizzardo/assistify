@@ -14,5 +14,6 @@ import { ServeFileController } from 'src/presentation/controllers/storage/serve-
       useClass: FsFileStorage,
     },
   ],
+  exports: [FileStorage],
 })
 export class StorageModule {}

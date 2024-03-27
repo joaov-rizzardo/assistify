@@ -1,6 +1,9 @@
 import { CreateUserDTO } from 'src/application/core/dtos/user/create-user-dto';
 import { User } from 'src/application/core/entities/user';
-import { UserRepository } from 'src/application/core/interfaces/repositories/user-repository';
+import {
+  UpdateUserArgs,
+  UserRepository,
+} from 'src/application/core/interfaces/repositories/user-repository';
 import { v4 as uuid } from 'uuid';
 
 export class InMemoryUserRepository implements UserRepository {
@@ -53,6 +56,21 @@ export class InMemoryUserRepository implements UserRepository {
           })
         : user,
     );
+    return this.users.find((user) => user.getId() === userId) || null;
+  }
+
+  update(userId: string, args: UpdateUserArgs): User | null {
+    this.users = this.users.map((user) => {
+      if (user.getId() === userId) {
+        return new User({
+          ...user.toObject(),
+          name: args.name || user.getName(),
+          lastName: args.lastName || user.getLastName(),
+          profilePicture: args.profilePicture || user.getProfilePicture(),
+        });
+      }
+      return user;
+    });
     return this.users.find((user) => user.getId() === userId) || null;
   }
 }

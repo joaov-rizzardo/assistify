@@ -67,6 +67,7 @@ export class User {
       id: this.getId(),
       name: this.getName(),
       lastName: this.getLastName(),
+      password: this.getPassword(),
       email: this.getEmail(),
       profilePicture: this.getProfilePicture(),
       createdAt: this.getCreatedAt(),

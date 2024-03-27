@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from 'src/application/core/interfaces/repositories/user-repository';
+import {
+  UpdateUserArgs,
+  UserRepository,
+} from 'src/application/core/interfaces/repositories/user-repository';
 import { PrismaProvider } from '../prisma-provider';
 import { User } from 'src/application/core/entities/user';
 import { CreateUserDTO } from 'src/application/core/dtos/user/create-user-dto';
@@ -71,6 +74,21 @@ export class PrismaUserRepository implements UserRepository {
     const result = await this.prisma.client.users.update({
       data: {
         password,
+      },
+      where: {
+        id: userId,
+      },
+    });
+    if (!result) return null;
+    return this.instanceUserEntityByResponse(result);
+  }
+
+  async update(userId: string, args: UpdateUserArgs): Promise<User | null> {
+    const result = await this.prisma.client.users.update({
+      data: {
+        name: args.name,
+        last_name: args.lastName,
+        profile_picture: args.profilePicture,
       },
       where: {
         id: userId,
