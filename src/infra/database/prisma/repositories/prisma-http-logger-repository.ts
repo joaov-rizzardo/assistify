@@ -16,6 +16,7 @@ export class PrismaHttpLoggerRepository implements HttpLoggerRepository {
         message: args.message,
         route: args.route,
         userId: args.userId,
+        workspaceId: args.workspaceId,
         body: args.body,
         stack: args.stack,
         method: args.method,

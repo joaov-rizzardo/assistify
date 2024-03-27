@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { HttpLogger } from 'src/application/core/interfaces/logging/http-logger';
-import { UserRequest } from '../guards/user-authentication.guard';
+import { WorkspaceRequest } from '../guards/workspace-authentication.guard';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -19,7 +19,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   async catch(exception: unknown, host: ArgumentsHost) {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
-    const request = ctx.getRequest<UserRequest>();
+    const request = ctx.getRequest<WorkspaceRequest>();
 
     const httpStatus =
       exception instanceof HttpException
@@ -47,6 +47,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       {
         httpCode: httpStatus,
         route: httpAdapter.getRequestUrl(ctx.getRequest()),
+        workspaceId: request?.workspace?.id || undefined,
         userId: request?.userId || undefined,
         body: request.body,
         stack: errorStack,

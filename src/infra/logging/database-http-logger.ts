@@ -36,6 +36,7 @@ export class DatabaseHttpLogger implements HttpLogger {
       message: message,
       route: logData.route,
       userId: logData.userId,
+      workspaceId: logData.workspaceId,
       stack: logData.stack,
       body: logData.body && JSON.stringify(logData.body),
       method: logData.method,

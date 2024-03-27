@@ -1,5 +1,6 @@
 export type LogData = {
   userId?: string;
+  workspaceId?: string;
   body?: Record<any, any>;
   stack?: string;
   route: string;

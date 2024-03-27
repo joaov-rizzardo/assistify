@@ -110,17 +110,18 @@ model Contacts {
 }
 
 model HttpLogs {
-  id         String       @id @default(uuid())
-  message    String
-  userId     String?
-  body       Json?
-  stack      String?      @db.LongText
-  route      String
-  method     String
-  httpCode   Int
-  level      HttpLogLevel
-  created_at DateTime     @default(now())
-  updated_at DateTime     @updatedAt
+  id          String       @id @default(uuid())
+  message     String
+  userId      String?
+  workspaceId String?
+  body        Json?
+  stack       String?      @db.LongText
+  route       String
+  method      String
+  httpCode    Int
+  level       HttpLogLevel
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
 }
 
 enum HttpLogLevel {
