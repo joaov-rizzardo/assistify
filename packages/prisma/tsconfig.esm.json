@@ -1,0 +1,6 @@
+{
+  "extends": "@assistify/ts-config-commons/base-esm.json",
+  "compilerOptions": {
+    "outDir": "./lib/esm"
+  }
+}

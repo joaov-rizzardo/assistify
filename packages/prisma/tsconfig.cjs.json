@@ -1,0 +1,6 @@
+{
+  "extends": "@assistify/ts-config-commons/base-cjs.json",
+  "compilerOptions": {
+    "outDir": "./lib/cjs"
+  }
+}

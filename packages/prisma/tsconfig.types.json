@@ -1,0 +1,6 @@
+{
+  "extends": "@assistify/ts-config-commons/base-types.json",
+  "compilerOptions": {
+    "outDir": "./lib/types"
+  }
+}

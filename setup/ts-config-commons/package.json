@@ -1,0 +1,14 @@
+{
+    "name": "@assistify/ts-config-commons",
+    "version": "1.0.0",
+    "license": "MIT",
+    "files": [
+        "base.json",
+        "base-cjs.json",
+        "base-types.json",
+        "base-esm.json"
+    ],
+    "scripts": {
+        "lint": "echo 'Not necessary'"
+    }
+}

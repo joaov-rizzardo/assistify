@@ -1,0 +1,3 @@
+{
+  "extends": "@assistify/ts-config-commons/base.json"
+}

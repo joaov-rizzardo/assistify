@@ -1,0 +1,39 @@
+{
+  "name": "@assistify/prisma",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "main": "lib/cjs/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    "types": "./lib/types/index.d.ts",
+    "browser": {
+      "require": "./lib/cjs/index.js",
+      "import": "./lib/esm/index.js"
+    },
+    "deno": {
+      "require": "./lib/cjs/index.js",
+      "import": "./lib/esm/index.js"
+    },
+    "worker": {
+      "require": "./lib/cjs/index.js",
+      "import": "./lib/esm/index.js"
+    },
+    "default": {
+      "require": "./lib/cjs/index.js",
+      "import": "./lib/esm/index.js"
+    }
+  },
+  "scripts": {
+    "build": "rm -rf ./lib && tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.11.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.11.0",
+    "@assistify/ts-config-commons": "*"
+  }
+}
