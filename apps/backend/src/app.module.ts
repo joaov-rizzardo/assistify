@@ -16,7 +16,9 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: ['.env', '../../.env']
+    }),
     ClsModule.forRoot({
       global: true,
       middleware: { mount: true }

@@ -27,13 +27,16 @@
     }
   },
   "scripts": {
-    "build": "rm -rf ./lib && tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json"
+    "build": "rm -rf ./lib && tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
+    "generate": "prisma generate",
+    "push": "dotenv -e ../../.env -- prisma db push"
   },
   "dependencies": {
     "@prisma/client": "^5.11.0"
   },
   "devDependencies": {
-    "prisma": "^5.11.0",
-    "@assistify/ts-config-commons": "*"
+    "@assistify/ts-config-commons": "*",
+    "dotenv-cli": "^7.4.1",
+    "prisma": "^5.11.0"
   }
 }
