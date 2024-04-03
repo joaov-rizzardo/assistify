@@ -1,4 +1,4 @@
-FROM node:20-alpine 
+FROM node:20-alpine as stage
 
 WORKDIR /app
 
@@ -6,17 +6,27 @@ RUN apk add --no-cache git
 
 COPY ./package.json ./
 COPY ./package-lock.json ./
+COPY ./setup/ts-config-commons ./setup/ts-config-commons/
+COPY ./setup/eslint-commons ./setup/eslint-commons/
+COPY ./setup/jest-commons ./setup/jest-commons/
+COPY ./packages/prisma/ ./packages/prisma/
+COPY ./apps/backend ./apps/backend/
 
 RUN npm install
 
-COPY ./setup/ts-config-commons ./setup/ts-config-commons/
-COPY ./setup/eslint-commons ./setup/eslint-commons/
-
-COPY ./packages/prisma/ ./packages/prisma/
-
-COPY ./apps/backend ./apps/backend/
-
+RUN cd ./setup/eslint-commons && npm install
+RUN cd ./setup/jest-commons && npm install
 RUN cd ./packages/prisma/ && npm install && npm run generate && npm run build
+
+FROM stage as dev
+
+RUN cd ./apps/backend && npm install
+
+EXPOSE 3000
+
+CMD cd ./packages/prisma/ && npm run push && cd ../../apps/backend/ && npm run start:dev
+
+FROM stage as prod
 
 RUN cd ./apps/backend && npm install && npm run build
 

@@ -1,13 +1,16 @@
 version: '3.9'
-name: 'assistify'
+name: 'assistify-dev'
 services:
   backend:
     build:
       context: .
-      target: prod
+      target: dev
       dockerfile: Dockerfile.backend
     ports:
       - '3000:3000'
+    volumes:
+      - ./apps/backend/:/app/apps/backend/
+      - /app/apps/backend/node_modules
     networks:
       - assistify-network
     environment:
