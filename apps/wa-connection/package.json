@@ -1,0 +1,22 @@
+{
+  "name": "@assistify/wa-connection",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^4.26.2"
+  },
+  "devDependencies": {
+    "@assistify/eslint-commons": "*",
+    "@assistify/jest-commons": "*",
+    "@assistify/ts-config-commons": "*",
+    "@types/node": "^20.12.4",
+    "nodemon": "^3.1.0"
+  }
+}
