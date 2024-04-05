@@ -5,7 +5,7 @@ services:
     build:
       context: .
       target: dev
-      dockerfile: Dockerfile.backend
+      dockerfile: ./apps/backend/Dockerfile.backend
     ports:
       - '3000:3000'
     volumes:
