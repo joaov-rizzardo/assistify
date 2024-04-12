@@ -1,5 +1,7 @@
+import { ClusterEventsListener } from '../cluster/cluster-events-listener';
+
 export class ClusterWorker {
   async init() {
-    console.log('cluster inicializado');
+    process.on('message', ClusterEventsListener.listen);
   }
 }
