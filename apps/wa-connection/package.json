@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@assistify/prisma": "*",
+    "@whiskeysockets/baileys": "^6.6.0",
+    "dotenv": "^16.4.5",
     "fastify": "^4.26.2",
     "zod": "^3.22.4"
   },
@@ -17,6 +20,7 @@
     "@assistify/eslint-commons": "*",
     "@assistify/jest-commons": "*",
     "@assistify/ts-config-commons": "*",
+    "@types/dotenv": "^8.2.0",
     "@types/node": "^20.12.4",
     "nodemon": "^3.1.0"
   }
