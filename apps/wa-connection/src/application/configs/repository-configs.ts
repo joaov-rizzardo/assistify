@@ -1,18 +1,18 @@
 import { PrismaBaileysSessionRepository } from '../../infra/libs/prisma/repositories/prisma-baileys-session-repository';
-import { Repository } from '../core/interfaces/repositories/repository';
 import { BaileysSessionRepository } from '../core/interfaces/repositories/baileys-session-repository';
 
 export class RepositoryConfigs {
-  private static instances: Map<string, Repository> = new Map();
-  private static mapping = new Map<string, new () => Repository>([[BaileysSessionRepository.name, PrismaBaileysSessionRepository]]);
+  private static instances: Map<string, unknown> = new Map();
 
-  static getRepositoryInstance<T extends abstract new () => Repository>(constructor: T): InstanceType<T> {
+  private static mapping = new Map<string, new (...args: unknown[]) => unknown>([[BaileysSessionRepository.name, PrismaBaileysSessionRepository]]);
+
+  static getRepositoryInstance<T>(constructor: abstract new () => T): T {
     const name = constructor.name;
     if (!this.instances.has(name)) {
-      const RepoConstructor = this.mapping.get(name);
-      if (!RepoConstructor) throw new Error(`Repository constructor not found for ${name}`);
-      this.instances.set(name, new RepoConstructor());
+      const constructor = this.mapping.get(name);
+      if (!constructor) throw new Error(name);
+      this.instances.set(name, new constructor());
     }
-    return this.instances.get(name) as InstanceType<T>;
+    return this.instances.get(name) as T;
   }
 }

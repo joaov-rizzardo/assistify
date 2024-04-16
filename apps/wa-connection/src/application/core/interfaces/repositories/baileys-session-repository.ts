@@ -1,3 +1,3 @@
-import { Repository } from './repository';
-
-export abstract class BaileysSessionRepository implements Repository {}
+export abstract class BaileysSessionRepository {
+  abstract findById(): void;
+}
