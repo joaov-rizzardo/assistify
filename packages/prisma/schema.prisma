@@ -8,13 +8,14 @@ datasource db {
 }
 
 model BaileysSession {
-  pkId      BigInt @id @default(autoincrement())
-  sessionId String
   id        String
+  sessionId String
   data      String @db.LongText
+  serverId  String
 
-  @@unique([sessionId, id], map: "unique_id_per_session_id_session")
+  @@id([sessionId, id])
   @@index([sessionId])
+  @@index([serverId])
 }
 
 model Users {

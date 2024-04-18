@@ -2,7 +2,9 @@ import { exit } from 'process';
 import { z } from 'zod';
 import * as dotenv from 'dotenv';
 
-const DotenvSchema = z.object({});
+const DotenvSchema = z.object({
+  SERVER_ID: z.string()
+});
 
 type DotenvSchemaType = z.infer<typeof DotenvSchema>;
 
