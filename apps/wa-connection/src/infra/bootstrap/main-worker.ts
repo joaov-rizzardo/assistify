@@ -1,10 +1,10 @@
 import { Worker } from 'cluster';
-import { WorkersBalancer } from '../common/workers-balancer';
 import { FastifyServer } from './fastify-server';
+import { ClusterBalancer } from '../cluster/cluster-balancer';
 
 export class MainWorker {
   static async init(workers: Worker[]) {
-    WorkersBalancer.init(workers);
+    ClusterBalancer.init(workers);
     FastifyServer.init();
   }
 }
