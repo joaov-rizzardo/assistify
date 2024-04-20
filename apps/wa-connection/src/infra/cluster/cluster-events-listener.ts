@@ -1,20 +1,15 @@
-import { randomUUID } from 'crypto';
 import {
   ClusterMessageBody,
   ClusterMessagePayload,
   ClusterMessagePayloadKeys
 } from '../../types/cluster-communication/cluster-communication-payload-types';
 import { ClusterResponseType } from '../../types/cluster-communication/cluster-communication-response-types';
+import { MakeWAConnetion } from '../../application/use-cases/make-wa-connection';
 
 export type EventMapFunction<T extends ClusterMessagePayloadKeys> = (message: ClusterMessagePayload[T]) => Promise<ClusterResponseType[T]>;
 
 const eventsMap: Record<ClusterMessagePayloadKeys, EventMapFunction<ClusterMessagePayloadKeys>> = {
-  make_connection: async () => {
-    return {
-      qrCode: 'teste',
-      sessionId: randomUUID()
-    };
-  }
+  make_connection: MakeWAConnetion.connect
 };
 export class ClusterEventsListener {
   static async listen(message: ClusterMessageBody<ClusterMessagePayloadKeys>) {

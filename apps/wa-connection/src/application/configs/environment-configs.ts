@@ -3,7 +3,8 @@ import { z } from 'zod';
 import * as dotenv from 'dotenv';
 
 const DotenvSchema = z.object({
-  SERVER_ID: z.string()
+  SERVER_ID: z.string(),
+  DATABASE_URL: z.string()
 });
 
 type DotenvSchemaType = z.infer<typeof DotenvSchema>;
@@ -13,7 +14,7 @@ export class EnvironmentConfigs {
 
   static loadEnvironmentVariables() {
     try {
-      dotenv.config();
+      dotenv.config({ path: ['.env', '../../.env'] });
       this.variables = DotenvSchema.parse(process.env);
     } catch {
       console.log('Cannot read environment variables, please check if they are valid');

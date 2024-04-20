@@ -37,13 +37,12 @@ export class ClusterBalancer {
 
   private static calculateWorkersSessions() {
     const workers = [...this.sessions.values()];
-    const sessionsPerWorker: Record<number, number> = {};
+    const sessionsPerWorker: Record<number, number> = [...this.workers.keys()].reduce((carry: Record<number, number>, item: number) => {
+      carry[item] = 0;
+      return carry;
+    }, {});
     workers.forEach((item) => {
-      if (sessionsPerWorker[item]) {
-        sessionsPerWorker[item] += 1;
-      } else {
-        sessionsPerWorker[item] = 1;
-      }
+      sessionsPerWorker[item] += 1;
     });
     return sessionsPerWorker;
   }
