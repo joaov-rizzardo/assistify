@@ -1,6 +1,7 @@
 import makeWASocket, { ConnectionState } from '@whiskeysockets/baileys';
 import { BaileysStore } from './baileys-store';
 import { toDataURL } from 'qrcode';
+import { BaileysConnectionUpdate } from './events/baileys-connection-update';
 
 export type BaileySocketType = ReturnType<typeof makeWASocket>;
 
@@ -14,7 +15,10 @@ export class BaileysSocket {
     this.listen();
   }
 
-  listen() {}
+  listen() {
+    this.socket.ev.on('connection.update', (data) => BaileysConnectionUpdate.handle(this.sessionId, data));
+    this.socket.ev.on('messages.upsert', () => console.log('CHEGOU MENSAGEM'));
+  }
 
   async awaitForQR(): Promise<string> {
     return new Promise((resolve, reject) => {
